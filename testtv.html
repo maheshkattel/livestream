@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0; /* Optional: Set a background color */
+        }
+
+        iframe {
+            width: 100%;
+            height: 100vh;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="iframeContainer">
+        <iframe id="myIframe" src="https://stream.crichd.vip/update/star1hi.php" width="100%" height="600px" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const iframeContainer = document.getElementById("iframeContainer");
+            const myIframe = document.getElementById("myIframe");
+
+            // Add a click event listener to the document
+            document.addEventListener("click", function(event) {
+                // Check if the clicked element is inside the iframe container
+                if (!iframeContainer.contains(event.target)) {
+                    // If not, navigate to https://maheshkattel.com.np
+                    window.location.href = "https://maheshkattel.com.np";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
