@@ -10,7 +10,17 @@
         margin: 0;
         padding: 0;
     }
-    .container {
+  
+  
+  .post-body img {
+    border-radius: 0px;
+    height: auto;
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
+    /* margin-bottom: 20px; */
+}
+    .phalaTvContainer {
         width: 100%;
         max-width: 1200px;
         margin: 0 auto;
@@ -21,7 +31,7 @@
         display: flex;
         align-items: center;
         flex-wrap: wrap; /* Added for responsiveness */
-        margin-top: 10px;
+        margin-bottom: 10px;
     }
 
     .maheshcontainer {
@@ -33,7 +43,7 @@
         align-items: center;
         flex-wrap: wrap; /* Added for responsiveness */
     }
-    .container img {
+    .phalaTvContainer img {
         width: 200px; /* Increased width to 200px */
         height: auto; /* Maintain aspect ratio */
         margin-right: 20px;
@@ -50,9 +60,14 @@
         text-align: justify;
     }
     @media (max-width: 768px) {
-        .container img {
-            width: 80px; /* Adjusted width for smaller screens */
-            height: 50px; /* Adjusted height for smaller screens */
+      
+      .phalaTvContainer{
+      padding:5px;
+      }
+      
+        .phalaTvContainer img {
+            width: 100px; /* Adjusted width for smaller screens */
+            height: auto; /* Maintain aspect ratio */
             margin-right: 10px;
         }
         iframe {
@@ -63,19 +78,17 @@
 </head>
 <body>
 
-<div class="container">
+<div class="phalaTvContainer">
     <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgLIpiGq2q8R03_q-B0DbBQp4qf47SL89Ml_hmestfhbLgfTV1NzJOgl4HZnxAmVrIxNf7Sq0mUZ9Uyv-uKNaBSyVs7dSwFw7k5JvjRMZh4CZbvuYeRJzkwLEfbJ78e9GM9g4Vg1uu7KlwFI9Ac8P9nLExRYdGg-rAEyXzq2Tsi9zBEOdRFPbG8plqfH4wv=s363" alt="YouTube Logo">
     <div style="flex-grow: 1;">
-        <h2>Phala Tv</h2>
     </div>
     <div style="text-align: right;">
         <a href="https://www.youtube.com/channel/UCcMAdwA9Hsobg0ubgWwKPGg" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #FF4000; color: #FFFFFF; text-decoration: none;">Subscribe Now</a>
     </div>
 </div>
-<div class="container">
+<div class="phalaTvContainer">
     <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgLIpiGq2q8R03_q-B0DbBQp4qf47SL89Ml_hmestfhbLgfTV1NzJOgl4HZnxAmVrIxNf7Sq0mUZ9Uyv-uKNaBSyVs7dSwFw7k5JvjRMZh4CZbvuYeRJzkwLEfbJ78e9GM9g4Vg1uu7KlwFI9Ac8P9nLExRYdGg-rAEyXzq2Tsi9zBEOdRFPbG8plqfH4wv=s363" alt="YouTube Logo">
     <div style="flex-grow: 1;">
-        <h2>Phala Tv</h2>
     </div>
     <div style="text-align: right;">
         <a href="https://www.youtube.com/channel/UCcMAdwA9Hsobg0ubgWwKPGg" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #FF4000; color: #FFFFFF; text-decoration: none;">Subscribe Now</a>
@@ -83,11 +96,10 @@
 </div>
 <div class="maheshcontainer">
     <h2>Champions League</h2>
-    <iframe src="https://v2.sportsonline.si/channels/hd/hd4.php" allowfullscreen></iframe>
+    <iframe src="https://maheshkattel.github.io/livestream/"></iframe>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed condimentum ultricies lorem, in ultricies tellus faucibus at. Quisque pharetra, metus id fringilla placerat, sapien sem ultricies velit, ac malesuada risus nunc sit amet arcu.</p>
     <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Mauris tempor odio eu nisi varius, vel bibendum ligula ultricies.</p>
 </div>
 
 </body>
 </html>
-
