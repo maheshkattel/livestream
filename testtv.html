@@ -16,7 +16,7 @@
     <div id="video-container">
         <video id="live-video" controls autoplay style="width: 100%; height: 100%;">
             <!-- Fallback content in case the video can't be played -->
-            <source src="https://manifest.prod.boltdns.net/manifest/v1/hls/v4/aes128/3588749423001/e197d779-931e-4ea3-a171-e81d125a0b59/a55e402b-96f7-42fc-a85b-9939c7f7cac6/10s/rendition.m3u8?fastly_token=NjYyM2Q5ODlfMzIzMDBkMmVhZjE3ZGIwNjFiNWRhZmFlZjAxODMyMWU1ZjBhMzQ4NDkxOTQ5N2M3ZTFkMWE3N2FkOGM2NmU2Yw%3D%3D" type="application/x-mpegURL">
+            <source src="https://bunyhlsipla.bunycdn.com/live/480pa.m3u8" type="application/x-mpegURL">
             Your browser does not support the video tag.
         </video>
     </div>
@@ -25,10 +25,10 @@
         if (Hls.isSupported()) {
             var video = document.getElementById('live-video');
             var hls = new Hls();
-            hls.loadSource('https://manifest.prod.boltdns.net/manifest/v1/hls/v4/aes128/3588749423001/e197d779-931e-4ea3-a171-e81d125a0b59/a55e402b-96f7-42fc-a85b-9939c7f7cac6/10s/rendition.m3u8?fastly_token=NjYyM2Q5ODlfMzIzMDBkMmVhZjE3ZGIwNjFiNWRhZmFlZjAxODMyMWU1ZjBhMzQ4NDkxOTQ5N2M3ZTFkMWE3N2FkOGM2NmU2Yw%3D%3D');
+            hls.loadSource('https://bunyhlsipla.bunycdn.com/live/480pa.m3u8');
             hls.attachMedia(video);
         } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            video.src = 'https://manifest.prod.boltdns.net/manifest/v1/hls/v4/aes128/3588749423001/e197d779-931e-4ea3-a171-e81d125a0b59/a55e402b-96f7-42fc-a85b-9939c7f7cac6/10s/rendition.m3u8?fastly_token=NjYyM2Q5ODlfMzIzMDBkMmVhZjE3ZGIwNjFiNWRhZmFlZjAxODMyMWU1ZjBhMzQ4NDkxOTQ5N2M3ZTFkMWE3N2FkOGM2NmU2Yw%3D%3D';
+            video.src = 'https://bunyhlsipla.bunycdn.com/live/480pa.m3u8';
         } else {
             console.error('HLS is not supported on your browser.');
         }
