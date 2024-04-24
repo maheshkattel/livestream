@@ -16,7 +16,7 @@
     <div id="video-container">
         <video id="live-video" controls autoplay style="width: 100%; height: 100%;">
             <!-- Fallback content in case the video can't be played -->
-            <source src="https://sports.lvyclv.com/live/m33192421/playlist.m3u8" type="application/x-mpegURL">
+            <source src="https://0gradgmt1gra1hcjigrzdnpba.ourdvsss.com/sports.lvyclv.com/live/m33208903/playlist.m3u8?wsSession=c4af235c1bfb5040c12644ea-171396745412019&wsIPSercert=e74d8e9d70f24185e0702498e2ea176a&wsiphost=local&wsBindIP=1" type="application/x-mpegURL">
             Your browser does not support the video tag.
         </video>
     </div>
@@ -25,13 +25,17 @@
         if (Hls.isSupported()) {
             var video = document.getElementById('live-video');
             var hls = new Hls();
-            hls.loadSource('https://sports.lvyclv.com/live/m33192421/playlist.m3u8');
+            hls.loadSource('https://0gradgmt1gra1hcjigrzdnpba.ourdvsss.com/sports.lvyclv.com/live/m33208903/playlist.m3u8?wsSession=c4af235c1bfb5040c12644ea-171396745412019&wsIPSercert=e74d8e9d70f24185e0702498e2ea176a&wsiphost=local&wsBindIP=1');
             hls.attachMedia(video);
         } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            video.src = 'https://sports.lvyclv.com/live/m33192421/playlist.m3u8';
+            video.src = 'https://0gradgmt1gra1hcjigrzdnpba.ourdvsss.com/sports.lvyclv.com/live/m33208903/playlist.m3u8?wsSession=c4af235c1bfb5040c12644ea-171396745412019&wsIPSercert=e74d8e9d70f24185e0702498e2ea176a&wsiphost=local&wsBindIP=1';
         } else {
             console.error('HLS is not supported on your browser.');
         }
     </script>
 </body>
 </html>
+
+
+
+<!--https://sports.lvyclv.com/live/m33192421/playlist.m3u8-->
