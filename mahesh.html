@@ -1,55 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+<!-- Code by Keyframe Effects -->
 <head>
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background-color: #f0f0f0; /* Optional: Set a background color */
-        }
-
-        iframe {
-            width: 100%;
-            height: 100vh;
-            border: none;
-            margin-bottom: 20px;
-        }
-
-        .fullscreen-btn {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-        }
-    </style>
+	<title>Phala TV</title>
+	<link href="https://fonts.googleapis.com/css2?family=Paytone+One&display=swap" rel="stylesheet" />
+	<link href="https://vjs.zencdn.net/7.2.3/video-js.css" rel="stylesheet" />
+	<link href="style.css" rel="stylesheet" />
 </head>
+
 <body>
-    <iframe id="myFrame" src="https://stream.crichd.vip/update/star.php"></iframe>
-    <button class="fullscreen-btn" onclick="toggleFullScreen()">Toggle Full Screen</button>
 
-    <script>
-        function toggleFullScreen() {
-            var iframe = document.getElementById("myFrame");
+<div class="maindiv">
+	<h2>Download Our Phala TV App for Android Users to gain Best Streaming Experience</h2>
+	<h2>Subscribe us on Youtube, Follow us on Facebook, Instagram, LinkedIn</h2>
+	<video id='myVideo'  class="video-js vjs-default-skin" width="400" height="300" controls>
+		<source type="application/x-mpegURL" src="https://jancdn-b.bunycdn.com/live/720pa.m3u8" />
+	</video>
+</div>
 
-            if (!document.fullscreenElement) {
-                iframe.requestFullscreen().catch(err => {
-                    alert(`Error attempting to enable full-screen mode: ${err.message}`);
-                });
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
-            }
-        }
-    </script>
+<!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
+<script src="https://vjs.zencdn.net/ie8/ie8-version/videojs-ie8.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.14.1/videojs-contrib-hls.js"></script>
+<script src="https://vjs.zencdn.net/7.2.3/video.js"></script>
+
+<script>
+	var player = videojs('myVideo');
+	player.play();
+</script>
+
 </body>
 </html>
