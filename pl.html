@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Example</title>
+    <style>
+
+#overlay-match {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    cursor: pointer;
+    background: rgb(0 0 0 / 60%);
+    z-index: 8;
+}
+
+.match-timing {
+    margin: 24px 0;
+    color: #444;
+}
+
+.match-info {
+    border-top: 1px solid #ddd;
+    display: table;
+    overflow: hidden;
+    width: 100%;
+    padding: 4px;
+}
+
+.match-info ul {
+    list-style: none;
+}
+
+.match-info li {
+    width: 33.33333333%;
+    float: right;
+    font-size: 14px;
+    font-weight: 100;
+    padding: 5px;
+}
+
+        .match-event {
+    border: 1px solid #ddd;
+    overflow: hidden;
+    text-align: center;
+    background: #eceef2;
+    margin-bottom: 12px;
+    position: relative;
+    border-radius: 8px;
+    order: 3;
+}
+
+.first-team, .left-team, .match-time {
+    width: 33.33333333%;
+    float: right;
+    color: #444;
+}
+        #result-now {
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin-right: -5px;
+            color: #fff;
+        }
+
+        .status-live,
+        .status-ended,
+        .status-soon,
+        .status-not-started {
+            color: white;
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .status-live {
+            background-color: #931800;
+        }
+
+        .status-ended {
+            background-color: #444;
+        }
+
+        .status-soon {
+            background-color: #0f6f37;
+        }
+
+        .status-not-started {
+            background-color: #263545;
+        }
+
+        .countdown-container {
+            padding: 5px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            display: inline-block;
+            color: white;
+        }
+
+        .countdown-text {
+            font-weight: bold;
+        }
+
+        .countdown-container.active {
+            background-color: red;
+        }
+    </style>
+    <!-- Include Firebase SDK with traditional script tag -->
+    <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore-compat.js"></script>
+</head>
+
+<body>
+    <h1>Firebase Example</h1>
+    <!-- Your HTML content -->
+    <div class="image-container"></div>
+
+    <script>
+        const data = [];
+
+        // Firebase configuration and Firestore initialization code
+        const firebaseConfig = {
+            apiKey: "AIzaSyB38YJ0-Yua8xrVK1n6vW2lLqsZWT7Buho",
+            authDomain: "live--link.firebaseapp.com",
+            projectId: "live--link",
+            storageBucket: "live--link.appspot.com",
+            messagingSenderId: "72803483857",
+            appId: "1:72803483857:android:3e32e5a6138d8324c6c5f0"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const usersRef = db.collection("premierleague");
+
+        // Async function to fetch data from Firestore
+        async function fetchData() {
+            try {
+                const querySnapshot = await usersRef.get();
+                querySnapshot.forEach((doc) => {
+                    data.push(doc.data());
+                    console.log(doc.id);
+                    console.log(doc.data());
+                });
+                // After fetching data, call function to display matches
+                displayMatches();
+            } catch (error) {
+                console.error("Error getting documents: ", error);
+            }
+        }
+
+        // Call the async function to fetch data
+        fetchData();
+
+        // Function to display matches in flex container
+        async function displayMatches() {
+            const imageContainer = await document.querySelector('.image-container');
+            if (data.length > 0) {
+                data.forEach(matchData => {
+                    // Create the main match event container
+                    const matchEvent = document.createElement('div');
+                    matchEvent.classList.add('match-event');
+
+                    // Construct the HTML content using DOM methods
+                    matchEvent.innerHTML = `
+                        <a id="match-live" href="https://www.phalatv.xyz/p/ipl-live-on-phala-tv-ipl-live-link-ipl.html" title="${matchData.vs2}">
+                            <div id="overlay-match"><div id="watch-match"></div></div>
+                        </a>
+                        <div class="first-team">
+                            <div class="team-logo"><img alt="${matchData.vs2}" src="${matchData.vs2Image}" title="${matchData.vs2}" /></div>
+                            <div class="team-name">${matchData.vs2}</div>
+                        </div>
+                        <div class="match-time">
+                            <div class="match-timing">
+                                <div id="result-now" class="status-live"></div>
+                                <div id="match-hour"></div>
+                                <span class="match-date" data-start="${matchData.startsAt.toDate()}" data-gameends="${matchData.endsAt.toDate()}"></span>
+                            </div>
+                            <div class="countdown-container">
+                                <div id="countdown" class="countdown-text"></div>
+                            </div>
+                        </div>
+                        <div class="left-team">
+                            <div class="team-logo"><img alt="${matchData.vs1}" src="${matchData.vs1Image}" title="${matchData.vs1}" /></div>
+                            <div class="team-name">${matchData.vs1}</div>
+                        </div>
+                    `;
+
+                    // Append the constructed match event to the image container
+                    imageContainer.appendChild(matchEvent);
+
+                    // Update match status dynamically
+                    updateMatches(matchData.startsAt.toDate(), matchData.endsAt.toDate(), matchEvent.querySelector('#result-now'), matchEvent, matchEvent.querySelector('.countdown-container'));
+                });
+            } else {
+                // Handle case when data array is empty
+                imageContainer.innerHTML = '<p>No data available.</p>';
+            }
+        }
+
+        // Function to update match status and countdown
+        function updateMatches(startTime, endTime, resultNowElement, matchEvent, countdownContainer) {
+            // Update match status every second
+            const updateInterval = setInterval(() => {
+                const now = new Date();
+                const status = getMatchStatus(now, startTime, endTime);
+                resultNowElement.textContent = `${status}`;
+
+                // Add class based on status to change background color
+                switch (status) {
+                    case 'LIVE':
+                        resultNowElement.className = 'status-live';
+                        break;
+                    case 'ENDED':
+                        resultNowElement.className = 'status-ended';
+                        break;
+                    case 'SOON':
+                        resultNowElement.className = 'status-soon';
+                        break;
+                    case 'NOT STARTED':
+                        resultNowElement.className = 'status-not-started';
+                        break;
+                    default:
+                        resultNowElement.className = ''; // Clear any previous classes
+                }
+
+                // Show or hide countdown container based on status
+                countdownContainer.classList.toggle('active', status === 'SOON' || status === 'NOT STARTED');
+
+                // Show countdown only for "SOON" and "NOT STARTED" statuses
+                if (status === 'SOON' || status === 'NOT STARTED') {
+                    const countdownElement = matchEvent.querySelector('#countdown');
+                    countdownElement.textContent = getCountdownText(now, startTime);
+                }
+            }, 1000);
+
+            // Initial update
+            const initialStatus = getMatchStatus(new Date(), startTime, endTime);
+            resultNowElement.textContent = `${initialStatus}`;
+        }
+
+        // Function to get match status based on current time
+        function getMatchStatus(now, startTime, endTime) {
+            const countdownSeconds = Math.floor((startTime - now) / 1000);
+
+            if (now >= startTime && now <= endTime) {
+                return "LIVE";
+            } else if (now > endTime) {
+                return "ENDED";
+            } else if (countdownSeconds < 3600) {
+                return "SOON";
+            } else {
+                return "NOT STARTED";
+            }
+        }
+
+        // Function to get countdown text
+        function getCountdownText(now, startTime) {
+            const countdownSeconds = Math.floor((startTime - now) / 1000);
+            const days = Math.floor(countdownSeconds / (24 * 60 * 60));
+            const hours = Math.floor((countdownSeconds % (24 * 60 * 60)) / (60 * 60));
+            const minutes = Math.floor((countdownSeconds % (60 * 60)) / 60);
+            const seconds = countdownSeconds % 60;
+
+            return `${days}D : ${hours}H : ${minutes}M : ${seconds}S`;
+        }
+    </script>
+</body>
+
+</html>
