@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match Status</title>
+         <script>
+    document.addEventListener('contextmenu', function(event) {
+        event.preventDefault();
+    });
+    
+    // Alert when developer tools are opened
+    function detectDevTools() {
+        if (window.chrome && window.chrome.devtools) {
+            alert("Developer tools detected!");
+        }
+    }
+    setInterval(detectDevTools, 1000); // Check every second
+     </script> 
+    <!-- Include Firebase SDK with traditional script tag -->
+    <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore-compat.js"></script>
+  <script>
+    document.onkeydown = function(event) {
+        if(event.keyCode == 123 || (event.ctrlKey && event.shiftKey && event.keyCode == 'I'.charCodeAt(0)) || 
+           (event.ctrlKey && event.shiftKey && event.keyCode == 'J'.charCodeAt(0)) || 
+           (event.ctrlKey && event.keyCode == 'U'.charCodeAt(0))) {
+            return false;
+        }
+    }
+</script>
+    <style>
+ @media screen and (min-width: 900px) { 
+            .container img.match-image {
+            width: 250px!important;
+            height: 250px!important;
+        }
+        }
+        
+        p,
+        h1{
+            margin-top:0px;
+            margin-bottom:0px;
+        }
+        body {
+            background-color: #cc4040;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            padding: 5px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            box-sizing: border-box;
+        }
+        .container img.match-image {
+            width: 100px;
+            height: 100px;
+            /* border-radius: 50px;
+            margin-top: 20px; */
+        }
+        .link-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .link-row img {
+            width: auto;
+            height: 40px;
+            border-radius: 18px;
+            margin-right: 10px;
+        }
+        .link {
+            color: #ffcc00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Match has not been started</h1>
+        <img src="https://firebasestorage.googleapis.com/v0/b/live--link.appspot.com/o/website%2Feurocup.png?alt=media&token=be32ab6e-12ed-4aab-b3ba-40e1e8bbe1ed" alt="Match Image" class="match-image">
+        <p>Match link will be added just 1 hour before match begins.</p>
+        <div class="link-row">
+            <img src="https://firebasestorage.googleapis.com/v0/b/live--link.appspot.com/o/website%2FPhala%20TV.png?alt=media&token=2ed907d5-fc80-4903-a97c-d511237e694f" alt="Phala TV Logo">
+            <a href="https://phalatv.xyz" class="link">www.phalatv.xyz</a>
+        </div>
+    </div>
+</body>
+</html>
