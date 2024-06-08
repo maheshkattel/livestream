@@ -4,6 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Match Status</title>
+         <script>
+    document.addEventListener('contextmenu', function(event) {
+        event.preventDefault();
+    });
+    
+    // Alert when developer tools are opened
+    function detectDevTools() {
+        if (window.chrome && window.chrome.devtools) {
+            alert("Developer tools detected!");
+        }
+    }
+    setInterval(detectDevTools, 1000); // Check every second
+     </script> 
+    <!-- Include Firebase SDK with traditional script tag -->
+    <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore-compat.js"></script>
+  <script>
+    document.onkeydown = function(event) {
+        if(event.keyCode == 123 || (event.ctrlKey && event.shiftKey && event.keyCode == 'I'.charCodeAt(0)) || 
+           (event.ctrlKey && event.shiftKey && event.keyCode == 'J'.charCodeAt(0)) || 
+           (event.ctrlKey && event.keyCode == 'U'.charCodeAt(0))) {
+            return false;
+        }
+    }
+</script>
     <style>
  @media screen and (min-width: 900px) { 
             .container img.match-image {
