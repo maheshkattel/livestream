@@ -4,44 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Match Status</title>
-         <script>
-    document.addEventListener('contextmenu', function(event) {
-        event.preventDefault();
-    });
-    
-    // Alert when developer tools are opened
-    function detectDevTools() {
-        if (window.chrome && window.chrome.devtools) {
-            alert("Developer tools detected!");
+    <script>
+        document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+        });
+
+        // Alert when developer tools are opened
+        function detectDevTools() {
+            if (window.chrome && window.chrome.devtools) {
+                alert("Developer tools detected!");
+            }
         }
-    }
-    setInterval(detectDevTools, 1000); // Check every second
-     </script> 
+        setInterval(detectDevTools, 1000); // Check every second
+    </script>
     <!-- Include Firebase SDK with traditional script tag -->
     <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore-compat.js"></script>
-  <script>
-    document.onkeydown = function(event) {
-        if(event.keyCode == 123 || (event.ctrlKey && event.shiftKey && event.keyCode == 'I'.charCodeAt(0)) || 
-           (event.ctrlKey && event.shiftKey && event.keyCode == 'J'.charCodeAt(0)) || 
-           (event.ctrlKey && event.keyCode == 'U'.charCodeAt(0))) {
-            return false;
+    <script>
+        document.onkeydown = function(event) {
+            if(event.keyCode == 123 || (event.ctrlKey && event.shiftKey && event.keyCode == 'I'.charCodeAt(0)) || 
+               (event.ctrlKey && event.shiftKey && event.keyCode == 'J'.charCodeAt(0)) || 
+               (event.ctrlKey && event.keyCode == 'U'.charCodeAt(0))) {
+                return false;
+            }
         }
-    }
-</script>
+    </script>
     <style>
- @media screen and (min-width: 900px) { 
+        @media screen and (min-width: 900px) { 
             .container img.match-image {
-            width: 250px!important;
-            height: 250px!important;
+                width: 250px!important;
+                height: 250px!important;
+            }
         }
+
+        p, h1 {
+            margin-top: 0;
+            margin-bottom: 0;
         }
-        
-        p,
-        h1{
-            margin-top:0px;
-            margin-bottom:0px;
-        }
+
         body {
             background-color: #cc4040;
             color: white;
@@ -49,9 +49,13 @@
             justify-content: center;
             align-items: center;
             text-align: center;
+            min-height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
+            padding: 10px;
+            box-sizing: border-box;
         }
+
         .container {
             width: 90%;
             max-width: 600px;
@@ -60,24 +64,26 @@
             background: rgba(0, 0, 0, 0.5);
             box-sizing: border-box;
         }
+
         .container img.match-image {
             width: 100px;
             height: 100px;
-            /* border-radius: 50px;
-            margin-top: 20px; */
         }
+
         .link-row {
             display: flex;
             justify-content: center;
             align-items: center;
             margin-top: 20px;
         }
+
         .link-row img {
             width: auto;
             height: 40px;
             border-radius: 18px;
             margin-right: 10px;
         }
+
         .link {
             color: #ffcc00;
             text-decoration: none;
