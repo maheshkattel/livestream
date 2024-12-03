@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height">
+    <title>HLS Stream Player</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+<video id="video" width="100%" controls autoplay></video>
+<script>
+    var video = document.getElementById('video');
+
+    // Get the 'm3u' parameter from the URL
+    var urlParams = new URLSearchParams(window.location.search);
+    var videoSrc = urlParams.get('m3u8Link');  // Retrieve the m3u parameter value
+
+    if (videoSrc) {
+      if (Hls.isSupported()) {
+        var hls = new Hls();
+        hls.loadSource(videoSrc);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, function () {
+          video.play();
+        });
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = videoSrc;
+        video.addEventListener('loadedmetadata', function () {
+          video.play();
+        });
+      }
+    } else {
+      alert('No m3u link provided in the URL!');
+    }
+</script>
+</body>
+</html>
