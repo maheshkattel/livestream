@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Include Firebase SDK with traditional script tag -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .maheshcontainer iframe {
+            width: 100%;
+            height: 500px;
+            border: 4px solid #cc4040;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+
+        }
+
+        .center-images {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 20px;
+            /* Adjust spacing between images and text */
+            text-align: center;
+        }
+
+        .center-images img {
+            height: 150px;
+        }
+
+        .center-images span {
+            font-size: 24px;
+            /* Adjust size of the 'vs' text */
+            font-weight: bold;
+        }
+
+        .post-body p {
+            text-align: justify;
+        }
+
+
+        .img {
+            height: 50px;
+        }
+
+        .post-body h1,
+        .post-body h2,
+        .post-body h3,
+        .post-body h4,
+        .post-body h5,
+        .post-body h6 {
+            border-top: 3px solid #cc4040;
+            color: #444;
+            margin: 15px 0 15px;
+            max-width: none;
+            border-radius: 6px;
+            -webkit-border-radius: 6px;
+            -moz-border-radius: 6px;
+            -o-border-radius: 6px;
+            background: #eceef2;
+            padding: 10px 8px;
+            box-shadow: -1px 2px 8px #c8c8c8;
+            -moz-box-shadow: -1px 2px 8px #c8c8c8;
+            -o-box-shadow: -1px 2px 8px #c8c8c8;
+            -webkit-box-shadow: -1px 2px 8px #c8c8c8;
+        }
+
+        .post-body img {
+            border-radius: 0px;
+            height: auto;
+            display: block;
+            max-width: 100%;
+            margin: 0 auto;
+            /* margin-bottom: 20px; */
+        }
+
+        .phalaHeaderContainer {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px 20px;
+            border: 2px solid #333;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            /* Added for responsiveness */
+            margin-bottom: 10px;
+        }
+
+        .phalaHeaderContainer img {
+            width: 50px;
+            /* Increased width to 200px */
+            height: 50px;
+            /* Maintain aspect ratio */
+            margin-right: 20px;
+        }
+
+        .phalaTvContainer {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            border-radius: 0px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .phalaTvContainer img {
+            width: 100px;
+            height: auto;
+            border-radius: 5px;
+            cursor: pointer;
+
+            justify-content: center;
+            /* Added to center-align the images */
+        }
+
+        .center-align {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 620px;
+            border: none;
+        }
+
+        @media (max-width: 768px) {
+            .phalaHeaderContainer {
+                padding: 5px;
+            }
+
+            .phalaHeaderContainer img {
+                width: 40px;
+                /* Adjusted width for smaller screens */
+                height: auto;
+                /* Maintain aspect ratio */
+                margin-right: 10px;
+            }
+
+            .phalaTvContainer img {
+                width: 100px;
+                height: 100px;
+                margin-bottom: 10px;
+            }
+
+            iframe {
+                height: 350px;
+            }
+        }
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app-compat.js"></script>
+    <script src="https://maheshkattel.github.io/livestream/javascript.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore-compat.js"></script>
+
+    <script>
+        document.addEventListener('contextmenu', function (event) {
+            event.preventDefault();
+        });
+
+        // Alert when developer tools are opened
+        function detectDevTools() {
+            if (window.chrome && window.chrome.devtools) {
+                alert("Developer tools detected!");
+            }
+        }
+        setInterval(detectDevTools, 1000); // Check every second
+        document.onkeydown = function (event) {
+            if (event.keyCode == 123 || (event.ctrlKey && event.shiftKey && event.keyCode == 'I'.charCodeAt(0)) ||
+                (event.ctrlKey && event.shiftKey && event.keyCode == 'J'.charCodeAt(0)) ||
+                (event.ctrlKey && event.keyCode == 'U'.charCodeAt(0))) {
+                return false;
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <!-- Your HTML content -->
+    <div class="image-container"></div>
+
+    <script>
+        const data = [];
+        const m = new Mahesh();
+        const firebaseConfig = {
+            apiKey: m.firebaseConfig.apiKey,
+            authDomain: m.firebaseConfig.authDomain,
+            projectId: m.firebaseConfig.projectId,
+            storageBucket: m.firebaseConfig.storageBucket,
+            messagingSenderId: m.firebaseConfig.messagingSenderId,
+            appId: m.firebaseConfig.appId,
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const usersRef = db.collection("premierleague");
+
+        // Function to fetch data from Firestore
+        // Function to fetch data from Firestore
+        async function fetchData() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                // const premierleague = urlParams.get('phalaTVLive');
+
+                // if (!premierleague) {
+                //     throw new Error('Missing URL parameter: premierleague');
+                // }
+
+                const usersRef = db.collection('matches');
+                const querySnapshot = await usersRef.get();
+                querySnapshot.forEach((doc) => {
+                    data.push(doc.data());
+
+                });
+                renderData();
+            } catch (error) {
+                console.error("Error getting documents: ", error);
+            }
+        }
+
+
+        // Function to render data on the webpage
+        function renderData() {
+            const imageContainer = document.querySelector('.image-container');
+            const urlParams = new URLSearchParams(window.location.search);
+            const index = urlParams.get('index');
+
+            if (data.length > 0 && index !== null) {
+
+                const premierLeagueData = data[index];
+                const webViewLink = premierLeagueData.webViewLink;
+                const webViewLinkElement = document.createElement('p');
+                webViewLinkElement.innerHTML = `
+                
+      <div class="center-images">
+  <img src="${premierLeagueData.team1Image}" height="100px" alt="${premierLeagueData.team1} Logo">
+  <span>VS</span>
+  <img src="${premierLeagueData.team2Image}" height="100px" alt="${premierLeagueData.team1} Logo">
+</div>
+<br>
+                
+
+  <div class="phalaHeaderContainer">
+    <img src="https://firebasestorage.googleapis.com/v0/b/live--link.appspot.com/o/social_media%2Fyoutube.png?alt=media&token=5e5da4b7-3b2b-4deb-a7e1-8b1050ebc331" height=50px alt="YouTube Logo">
+    <div style="flex-grow: 1;">
+    </div>
+    <div style="text-align: center;">
+        <a href="https://www.youtube.com/channel/UCcMAdwA9Hsobg0ubgWwKPGg" target="_blank" style="display: inline-block; padding: 10px 20px; border-radius: 4px; width: 72px; background-color: #FF0000; color: #FFFFFF; text-decoration: none;">Subscribe</a>
+    </div>
+</div>
+
+<div class="phalaHeaderContainer">
+    <img src="https://firebasestorage.googleapis.com/v0/b/live--link.appspot.com/o/social_media%2Ffacebook.png?alt=media&token=bbc73e1e-d587-4327-9f00-3602643714e1" alt="Facebook Logo">
+    <div style="flex-grow: 1;">
+    </div>
+    <div style="text-align: center;">
+        <a href="https://www.facebook.com/profile.php?id=61558022025139" target="_blank" style="display: inline-block; padding: 10px 20px; border-radius: 4px; width: 72px; background-color: #5e17eb; color: #FFFFFF; text-decoration: none;">Follow Us</a>
+    </div>
+</div>
+
+
+<div class="phalaHeaderContainer">
+    <img src="https://firebasestorage.googleapis.com/v0/b/live--link.appspot.com/o/social_media%2Ftelegram.png?alt=media&token=bb34e4a8-667a-4be5-a268-450368d20293" alt="Telegram Logo">
+    <div style="flex-grow: 1;">
+    </div>
+    <div style="text-align: center;">
+        <a href="https://www.facebook.com/profile.php?id=61558022025139" target="_blank" style="display: inline-block; padding: 10px 20px; border-radius: 4px; width: 72px; background-color: #0088cc; color: #FFFFFF; text-decoration: none;">Join Us</a>
+    </div>
+</div>
+
+
+      
+      <a style="display:block;font-size:16px;font-weight:500;text-align:center;border-radius:4px;padding:12px;background:#cc4040;text-decoration:none;color:#fff; margin-bottom: 10px;" href="https://drive.google.com/drive/folders/1nizEHTe1ot52QT9rb5ZsbAV4K7KRIzgZ" target="_blank" rel="noopener">
+        <span>
+          Android User Download Phala TV APP
+        </span>
+      </a>
+      
+                    <div class="phalaTvContainer center-align">
+                    ${premierLeagueData.youtube != '' ? `<img src="https://firebasestorage.googleapis.com/v0/b/live--link.appspot.com/o/website%2Flaliga%2Ffootballmobile.png?alt=media&token=5d5b299a-73f3-4347-9bd5-7657c4aa81c8" alt="Image 1" onclick="changeIframe('${premierLeagueData.youtube}')">` : ``}
+                    
+                    ${premierLeagueData.youtube1 != '' ? `<img src="https://firebasestorage.googleapis.com/v0/b/live--link.appspot.com/o/website%2Flaliga%2Ffootballmobile.png?alt=media&token=5d5b299a-73f3-4347-9bd5-7657c4aa81c8" alt="Image 1" onclick="changeIframe('${premierLeagueData.youtube1}')">` : ``}
+                    
+                    ${premierLeagueData.webViewLink != '' ? `<img src="https://firebasestorage.googleapis.com/v0/b/live--link.appspot.com/o/website%2Flaliga%2Ffootballmobile.png?alt=media&token=5d5b299a-73f3-4347-9bd5-7657c4aa81c8" alt="Image 1" onclick="changeIframe('${premierLeagueData.webViewink}')">` : ``}
+                    
+                    ${premierLeagueData.webViewLink1 != '' ? `<img src="https://firebasestorage.googleapis.com/v0/b/live--link.appspot.com/o/website%2Flaliga%2Ffootball1.png?alt=media&token=ea2c3cba-e663-4d3b-9bdf-2b8990c3bac3" alt="Image 1" onclick="changeIframe('${premierLeagueData.webViewLink1}')">` : ``}
+                    
+                    ${premierLeagueData.webViewLink2 != '' ? `<img src="https://firebasestorage.googleapis.com/v0/b/live--link.appspot.com/o/website%2Flaliga%2Ffootball2.png?alt=media&token=da87431b-d504-4d9e-8639-8d48ac6a3ed3" alt="Image 1" onclick="changeIframe('${premierLeagueData.webViewLink2}')">` : ``}
+                    
+                    ${premierLeagueData.webViewLink3 != '' ? `<img src="https://firebasestorage.googleapis.com/v0/b/live--link.appspot.com/o/website%2Flaliga%2Ffootball3.png?alt=media&token=9aacca92-78ec-4fb7-b3e2-939945d3b56f" alt="Image 1" onclick="changeIframe('${premierLeagueData.webViewLink3}')">` : ``}
+                    
+                    ${premierLeagueData.webViewLink4 != '' ? `<img src="https://firebasestorage.googleapis.com/v0/b/live--link.appspot.com/o/website%2Flaliga%2Ffootball4.png?alt=media&token=4bd838a1-634e-4429-aa0f-ba0f6cbb28b4" alt="Image 1" onclick="changeIframe('${premierLeagueData.webViewLink4}')">` : ``}
+                    
+                    ${premierLeagueData.webViewLink5 != '' ? `<img src="https://firebasestorage.googleapis.com/v0/b/live--link.appspot.com/o/website%2Flaliga%2Ffootball5.png?alt=media&token=cb23ea5b-efcf-48d4-b0ea-13ace3ee7218" alt="Image 1" onclick="changeIframe('${premierLeagueData.webViewLink5}')">` : ``}
+                    
+                    ${premierLeagueData.webViewLink5 != '' ? `<img src="https://firebasestorage.googleapis.com/v0/b/live--link.appspot.com/o/website%2Flaliga%2Ffootball6.png?alt=media&token=1de40944-0050-4125-bf39-138107079420" alt="Image 1" onclick="changeIframe('${premierLeagueData.webViewLink5}')">` : ``}
+                    
+                    
+                                       </div> 
+                    <div class="maheshcontainer">
+                        <iframe id="iframe" src="${premierLeagueData.webViewLink}" allowfullscreen></iframe>
+                    </div>
+                `;
+                imageContainer.appendChild(webViewLinkElement);
+            } else {
+                // Handle case when data array is empty or index is not provided
+                imageContainer.innerHTML = '<p>No data available.</p>';
+            }
+        }
+
+        // Call fetchData function when the page loads
+        document.addEventListener('DOMContentLoaded', fetchData);
+    </script>
+
+    <script>
+        function changeIframe(url) {
+            document.getElementById('iframe').src = url;
+        }
+    </script>
+
+</body>
+
+</html>
