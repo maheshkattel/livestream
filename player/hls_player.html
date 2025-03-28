@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>AynaOTT Powered By @Fredflixceo</title>
+	<link rel="icon" href="img/fav.png" />
+	<style>
+		body {
+			background-color: #000;
+			margin: 0;
+			padding: 0;
+		}
+
+		#player {
+			height: 100vh;
+			width: 100%;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="player"></div>
+
+	<script src="https://cdn.jsdelivr.net/clappr/latest/clappr.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/clappr.level-selector/latest/level-selector.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@clappr/hlsjs-playback@1.0.1/dist/hlsjs-playback.min.js"></script>
+
+	<script>
+		var streamUrl = "https://funn-g1163.huibo.tv/GPA/H911/chunks.m3u8?p=48&cf=1743083886&d=&ip=126.115.249.216&e=1749984486&h=c3c8c7188ec675cb695ebe7a4d039c36";
+        if (streamUrl) {
+            var player = new Clappr.Player({
+                source: streamUrl,a
+                width: "100%",a
+                height: "100%",
+                autoPlay: true,
+                plugins: [HlsjsPlayback, LevelSelector],
+                mimeType: "application/x-mpegURL",
+                mediacontrol: { seekbar: "#ff0000", buttons: "#eee" },
+                parentId: "#player",
+                levelSelectorConfig: true
+            });
+
+            player.on(Clappr.Events.PLAYER_FULLSCREEN, function() {
+                if (screen.orientation && screen.orientation.lock) {
+                    screen.orientation.lock('landscape').catch(console.warn);
+                }
+            });
+
+            player.on(Clappr.Events.PLAYER_ERROR, function() {
+                console.log("Error! Retrying...");
+                setTimeout(function() {
+                    player.load(streamUrl);
+                    player.play();
+                }, 2000);
+            });
+
+            player.on(Clappr.Events.PLAYER_STOP, function() {
+                player.play();
+            });
+        } else {
+            console.error("No stream URL found!");
+        }
+	</script>
+</body>
+
+</html>
