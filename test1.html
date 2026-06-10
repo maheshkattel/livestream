@@ -1,0 +1,306 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Firebase JSON Uploader</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f1117; --surface: #1a1d27; --surface-alt: #22263a;
+      --border: #2e3350; --accent: #ff6b35; --accent-dim: rgba(255,107,53,0.12);
+      --green: #22c55e; --red: #ef4444; --text: #e8eaf0; --muted: #6b7280;
+      --font: 'Inter', system-ui, sans-serif; --mono: 'JetBrains Mono', 'Fira Code', monospace;
+    }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 40px 20px 60px; }
+    header { text-align: center; margin-bottom: 40px; }
+    .logo { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .logo-icon { width: 36px; height: 36px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+    .logo-icon svg { width: 20px; height: 20px; fill: white; }
+    h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em; }
+    .subtitle { font-size: 0.875rem; color: var(--muted); margin-top: 6px; }
+    .badge { display: inline-block; font-size: 0.7rem; padding: 2px 8px; border-radius: 20px; font-weight: 600; margin-left: 8px; vertical-align: middle; background: rgba(99,102,241,0.15); color: #818cf8; border: 1px solid rgba(99,102,241,0.3); }
+
+    /* status banner */
+    #statusBanner { width: 100%; max-width: 680px; border-radius: 10px; padding: 12px 16px; font-size: 0.85rem; font-weight: 500; margin-bottom: 16px; display: none; }
+    #statusBanner.show { display: block; }
+    #statusBanner.error { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.4); color: #fca5a5; }
+    #statusBanner.success { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.4); color: #86efac; }
+    #statusBanner.warn { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.4); color: #fcd34d; }
+
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px; width: 100%; max-width: 680px; margin-bottom: 20px; }
+    .card-title { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 14px; }
+    label { display: block; font-size: 0.875rem; color: var(--muted); margin-bottom: 6px; }
+    input[type="text"] { width: 100%; background: var(--surface-alt); border: 1px solid var(--border); border-radius: 8px; padding: 11px 14px; font-size: 0.95rem; font-family: var(--mono); color: var(--text); outline: none; transition: border-color 0.2s; }
+    input[type="text"]:focus { border-color: var(--accent); }
+    input[type="text"]::placeholder { color: var(--muted); }
+    .json-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .json-label { font-size: 0.875rem; color: var(--muted); }
+    .btn-clear { font-size: 0.75rem; color: var(--muted); background: none; border: none; cursor: pointer; padding: 2px 6px; border-radius: 4px; }
+    .btn-clear:hover { color: var(--red); }
+    textarea { width: 100%; height: 220px; background: var(--surface-alt); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; font-size: 0.82rem; font-family: var(--mono); color: var(--text); resize: vertical; outline: none; line-height: 1.6; transition: border-color 0.2s; }
+    textarea:focus { border-color: var(--accent); }
+    textarea::placeholder { color: var(--muted); }
+    .json-hint { font-size: 0.75rem; color: var(--muted); margin-top: 8px; line-height: 1.6; }
+    .json-hint code { background: var(--surface-alt); border-radius: 3px; padding: 1px 5px; font-family: var(--mono); color: var(--accent); }
+    .file-drop { margin-top: 12px; border: 1.5px dashed var(--border); border-radius: 8px; padding: 14px; text-align: center; font-size: 0.8rem; color: var(--muted); cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+    .file-drop:hover, .file-drop.drag-over { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); }
+    .file-drop input { display: none; }
+    .upload-btn { width: 100%; max-width: 680px; padding: 14px; background: var(--accent); color: white; font-size: 1rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: opacity 0.2s; }
+    .upload-btn:hover { opacity: 0.88; }
+    .upload-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .spinner { width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .log-wrap { width: 100%; max-width: 680px; margin-top: 20px; }
+    .log-title { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 8px; }
+    #log { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; font-family: var(--mono); font-size: 0.8rem; line-height: 1.8; min-height: 60px; max-height: 320px; overflow-y: auto; }
+    .log-line { display: flex; gap: 10px; align-items: flex-start; }
+    .log-line.info .tag { color: var(--muted); }
+    .log-line.ok .tag { color: var(--green); }
+    .log-line.error .tag { color: var(--red); }
+    .log-line.warn .tag { color: #f59e0b; }
+    .log-msg { color: var(--text); word-break: break-all; }
+    .empty-log { color: var(--muted); font-size: 0.8rem; font-style: italic; }
+
+    /* rules helper box */
+    #rulesBox { display: none; width: 100%; max-width: 680px; margin-top: 16px; background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.3); border-radius: 10px; padding: 16px 18px; }
+    #rulesBox.show { display: block; }
+    #rulesBox h3 { font-size: 0.85rem; color: #fca5a5; margin-bottom: 8px; }
+    #rulesBox p { font-size: 0.8rem; color: var(--muted); line-height: 1.6; margin-bottom: 8px; }
+    #rulesBox pre { background: var(--surface-alt); border-radius: 6px; padding: 10px 12px; font-size: 0.78rem; font-family: var(--mono); color: #86efac; overflow-x: auto; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+      </div>
+      <h1>Firebase JSON Uploader</h1>
+    </div>
+    <p class="subtitle">
+      Paste or drop a JSON file → upload directly to Firestore
+      <span class="badge">online-food-delivery-7f53f</span>
+    </p>
+  </header>
+
+  <div id="statusBanner"></div>
+
+  <div class="card">
+    <div class="card-title">Target Collection</div>
+    <label for="collectionName">Collection name</label>
+    <input type="text" id="collectionName" placeholder="e.g. products, users, orders" autocomplete="off" spellcheck="false" />
+  </div>
+
+  <div class="card">
+    <div class="card-title">JSON Data</div>
+    <div class="json-toolbar">
+      <span class="json-label">Paste JSON below</span>
+      <button class="btn-clear" id="clearBtn">✕ Clear</button>
+    </div>
+    <textarea id="jsonInput" placeholder='[
+  { "name": "Burger", "price": 8.99, "category": "Fast Food" },
+  { "name": "Pizza",  "price": 12.5,  "category": "Italian" }
+]'></textarea>
+    <p class="json-hint">
+      Use an <code>array [ ]</code> for multiple docs, or a single <code>object { }</code> for one doc.<br>
+      If a doc has an <code>"id"</code> field, it will be used as the Firestore document ID.
+    </p>
+    <div class="file-drop" id="dropZone">
+      <input type="file" id="fileInput" accept=".json" />
+      📂 Click or drag &amp; drop a <strong>.json</strong> file here
+    </div>
+  </div>
+
+  <button class="upload-btn" id="uploadBtn">
+    <div class="spinner" id="spinner"></div>
+    <span id="btnText">Upload to Firestore</span>
+  </button>
+
+  <div class="log-wrap">
+    <div class="log-title">Upload Log</div>
+    <div id="log"><span class="empty-log">No activity yet.</span></div>
+  </div>
+
+  <div id="rulesBox">
+    <h3>🔒 Permission Denied — Fix Your Firestore Rules</h3>
+    <p>Go to <strong>Firebase Console → Firestore Database → Rules</strong> and set:</p>
+    <pre>rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}</pre>
+    <p>⚠️ This opens full access for testing only. Add proper auth rules before going live.</p>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, setDoc, doc }
+      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBTEFOKEYD08IE2VAD8O1TevrIgn30tzN4",
+      authDomain: "online-food-delivery-7f53f.firebaseapp.com",
+      projectId: "online-food-delivery-7f53f",
+      storageBucket: "online-food-delivery-7f53f.appspot.com",
+      messagingSenderId: "886466466698",
+      appId: "1:886466466698:web:f6731f824f01575abcae73"
+    };
+
+    let db;
+    try {
+      const app = initializeApp(firebaseConfig);
+      db = getFirestore(app);
+      log("Firebase initialized ✓", "ok");
+    } catch(e) {
+      log("Firebase init failed: " + e.message, "error");
+      showBanner("Firebase failed to initialize: " + e.message, "error");
+    }
+
+    // ── helpers ──
+    function log(msg, type = "info") {
+      const logEl = document.getElementById("log");
+      logEl.querySelector(".empty-log")?.remove();
+      const tags = { info: "INFO", ok: "  OK", error: " ERR", warn: "WARN" };
+      const line = document.createElement("div");
+      line.className = `log-line ${type}`;
+      line.innerHTML = `<span class="tag">[${tags[type]}]</span><span class="log-msg">${escHtml(msg)}</span>`;
+      logEl.appendChild(line);
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    function escHtml(s) {
+      return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    }
+
+    function showBanner(msg, type) {
+      const b = document.getElementById("statusBanner");
+      b.textContent = msg;
+      b.className = `show ${type}`;
+    }
+
+    function hideBanner() {
+      document.getElementById("statusBanner").className = "";
+    }
+
+    function setLoading(on) {
+      document.getElementById("uploadBtn").disabled = on;
+      document.getElementById("spinner").style.display = on ? "block" : "none";
+      document.getElementById("btnText").textContent = on ? "Uploading…" : "Upload to Firestore";
+    }
+
+    // ── clear ──
+    document.getElementById("clearBtn").addEventListener("click", () => {
+      document.getElementById("jsonInput").value = "";
+      hideBanner();
+    });
+
+    // ── file load ──
+    function loadFile(file) {
+      if (!file) return;
+      if (!file.name.endsWith(".json")) { log("Please select a .json file.", "warn"); return; }
+      const reader = new FileReader();
+      reader.onload = e => {
+        document.getElementById("jsonInput").value = e.target.result;
+        log(`Loaded: ${file.name} (${(file.size/1024).toFixed(1)} KB)`, "info");
+      };
+      reader.onerror = () => log("Failed to read file.", "error");
+      reader.readAsText(file);
+    }
+
+    document.getElementById("fileInput").addEventListener("change", e => loadFile(e.target.files[0]));
+
+    const dropZone = document.getElementById("dropZone");
+    dropZone.addEventListener("click", () => document.getElementById("fileInput").click());
+    dropZone.addEventListener("dragover", e => { e.preventDefault(); dropZone.classList.add("drag-over"); });
+    dropZone.addEventListener("dragleave", () => dropZone.classList.remove("drag-over"));
+    dropZone.addEventListener("drop", e => {
+      e.preventDefault();
+      dropZone.classList.remove("drag-over");
+      loadFile(e.dataTransfer.files[0]);
+    });
+
+    // ── upload ──
+    document.getElementById("uploadBtn").addEventListener("click", async () => {
+      hideBanner();
+      document.getElementById("rulesBox").classList.remove("show");
+
+      const colName = document.getElementById("collectionName").value.trim();
+      const raw     = document.getElementById("jsonInput").value.trim();
+
+      if (!colName) {
+        showBanner("⚠️ Please enter a collection name.", "warn");
+        log("Collection name is required.", "warn");
+        return;
+      }
+      if (!raw) {
+        showBanner("⚠️ JSON data is empty.", "warn");
+        log("JSON input is empty.", "warn");
+        return;
+      }
+
+      // validate JSON
+      let data;
+      try {
+        data = JSON.parse(raw);
+      } catch (err) {
+        showBanner("❌ Invalid JSON: " + err.message, "error");
+        log("Invalid JSON: " + err.message, "error");
+        return;
+      }
+
+      const docs = Array.isArray(data) ? data : [data];
+      if (!docs.length) {
+        showBanner("⚠️ JSON array is empty — nothing to upload.", "warn");
+        return;
+      }
+
+      setLoading(true);
+      log(`Starting upload → collection: "${colName}" | ${docs.length} doc(s)`, "info");
+
+      let ok = 0, fail = 0, permissionDenied = false;
+
+      for (let i = 0; i < docs.length; i++) {
+        const item = docs[i];
+        try {
+          if (item.id) {
+            const { id, ...rest } = item;
+            await setDoc(doc(db, colName, String(id)), rest);
+            log(`[${i+1}/${docs.length}] Set doc id="${id}"`, "ok");
+          } else {
+            const ref = await addDoc(collection(db, colName), item);
+            log(`[${i+1}/${docs.length}] Added id="${ref.id}"`, "ok");
+          }
+          ok++;
+        } catch (err) {
+          fail++;
+          log(`[${i+1}/${docs.length}] FAILED: ${err.code} — ${err.message}`, "error");
+          if (err.code === "permission-denied") {
+            permissionDenied = true;
+            log("Stopping — permission denied. Fix Firestore rules.", "error");
+            break;
+          }
+        }
+      }
+
+      setLoading(false);
+
+      if (permissionDenied) {
+        showBanner("❌ Permission denied — your Firestore rules are blocking writes. See instructions below.", "error");
+        document.getElementById("rulesBox").classList.add("show");
+      } else if (fail > 0) {
+        showBanner(`⚠️ Upload finished with errors: ${ok} succeeded, ${fail} failed.`, "warn");
+      } else {
+        showBanner(`✅ All ${ok} document(s) uploaded successfully to "${colName}"!`, "success");
+      }
+
+      log(`─── Done: ${ok} succeeded, ${fail} failed ───`, fail > 0 ? "warn" : "ok");
+    });
+  </script>
+</body>
+</html>
