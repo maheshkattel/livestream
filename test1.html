@@ -1,1 +1,274 @@
-<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8" /> <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <title>Firebase JSON Uploader</title> <style> *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; } :root { --bg: #0f1117; --surface: #1a1d27; --surface-alt: #22263a; --border: #2e3350; --accent: #ff6b35; --accent-dim: rgba(255,107,53,0.12); --green: #22c55e; --red: #ef4444; --text: #e8eaf0; --muted: #6b7280; --font: 'Inter', system-ui, sans-serif; --mono: 'JetBrains Mono', 'Fira Code', monospace; } body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 40px 20px 60px; } header { text-align: center; margin-bottom: 40px; } .logo { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 10px; } .logo-icon { width: 36px; height: 36px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; } .logo-icon svg { width: 20px; height: 20px; fill: white; } h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em; } .subtitle { font-size: 0.875rem; color: var(--muted); margin-top: 6px; } .badge { display: inline-block; font-size: 0.7rem; padding: 2px 8px; border-radius: 20px; font-weight: 600; margin-left: 8px; vertical-align: middle; background: rgba(99,102,241,0.15); color: #818cf8; border: 1px solid rgba(99,102,241,0.3); } #statusBanner { width: 100%; max-width: 680px; border-radius: 10px; padding: 12px 16px; font-size: 0.85rem; font-weight: 500; margin-bottom: 16px; display: none; } #statusBanner.show { display: block; } #statusBanner.error { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.4); color: #fca5a5; } #statusBanner.success { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.4); color: #86efac; } #statusBanner.warn { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.4); color: #fcd34d; } .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px; width: 100%; max-width: 680px; margin-bottom: 20px; } .card-title { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 14px; } label { display: block; font-size: 0.875rem; color: var(--muted); margin-bottom: 6px; } input[type="text"] { width: 100%; background: var(--surface-alt); border: 1px solid var(--border); border-radius: 8px; padding: 11px 14px; font-size: 0.95rem; font-family: var(--mono); color: var(--text); outline: none; transition: border-color 0.2s; } input[type="text"]:focus { border-color: var(--accent); } input[type="text"]::placeholder { color: var(--muted); } .json-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; } .json-label { font-size: 0.875rem; color: var(--muted); } .btn-clear { font-size: 0.75rem; color: var(--muted); background: none; border: none; cursor: pointer; padding: 2px 6px; border-radius: 4px; } .btn-clear:hover { color: var(--red); } textarea { width: 100%; height: 220px; background: var(--surface-alt); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; font-size: 0.82rem; font-family: var(--mono); color: var(--text); resize: vertical; outline: none; line-height: 1.6; transition: border-color 0.2s; } textarea:focus { border-color: var(--accent); } textarea::placeholder { color: var(--muted); } .json-hint { font-size: 0.75rem; color: var(--muted); margin-top: 8px; line-height: 1.6; } .json-hint code { background: var(--surface-alt); border-radius: 3px; padding: 1px 5px; font-family: var(--mono); color: var(--accent); } .file-drop { margin-top: 12px; border: 1.5px dashed var(--border); border-radius: 8px; padding: 14px; text-align: center; font-size: 0.8rem; color: var(--muted); cursor: pointer; transition: border-color 0.2s, background 0.2s; } .file-drop:hover, .file-drop.drag-over { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); } .file-drop input { display: none; } .upload-btn { width: 100%; max-width: 680px; padding: 14px; background: var(--accent); color: white; font-size: 1rem; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: opacity 0.2s; } .upload-btn:hover { opacity: 0.88; } .upload-btn:disabled { opacity: 0.4; cursor: not-allowed; } .spinner { width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; } @keyframes spin { to { transform: rotate(360deg); } } .log-wrap { width: 100%; max-width: 680px; margin-top: 20px; } .log-title { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 8px; } #log { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; font-family: var(--mono); font-size: 0.8rem; line-height: 1.8; min-height: 60px; max-height: 320px; overflow-y: auto; } .log-line { display: flex; gap: 10px; align-items: flex-start; } .log-line.info .tag { color: var(--muted); } .log-line.ok .tag { color: var(--green); } .log-line.error .tag { color: var(--red); } .log-line.warn .tag { color: #f59e0b; } .log-msg { color: var(--text); word-break: break-all; } .empty-log { color: var(--muted); font-size: 0.8rem; font-style: italic; } #rulesBox { display: none; width: 100%; max-width: 680px; margin-top: 16px; background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.3); border-radius: 10px; padding: 16px 18px; } #rulesBox.show { display: block; } #rulesBox h3 { font-size: 0.85rem; color: #fca5a5; margin-bottom: 8px; } #rulesBox p { font-size: 0.8rem; color: var(--muted); line-height: 1.6; margin-bottom: 8px; } #rulesBox pre { background: var(--surface-alt); border-radius: 6px; padding: 10px 12px; font-size: 0.78rem; font-family: var(--mono); color: #86efac; overflow-x: auto; } </style> </head> <body> <header> <div class="logo"> <div class="logo-icon"> <svg viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg> </div> <h1>Firebase JSON Uploader</h1> </div> <p class="subtitle"> Paste or drop a JSON file → upload directly to Firestore <span class="badge">online-food-delivery-7f53f</span> </p> </header> <div id="statusBanner"></div> <div class="card"> <div class="card-title">Document ID</div> <label for="collectionName">Document ID (will be saved inside <code style="color:var(--accent);font-family:var(--mono)">soccer</code> collection)</label> <input type="text" id="collectionName" placeholder="e.g. premier_league, match_001, teamA" autocomplete="off" spellcheck="false" /> </div> <div class="card"> <div class="card-title">JSON Data</div> <div class="json-toolbar"> <span class="json-label">Paste JSON below</span> <button class="btn-clear" id="clearBtn">✕ Clear</button> </div> <textarea id="jsonInput" placeholder='{ "name": "Premier League", "country": "England", "teams": 20 }'></textarea> <p class="json-hint"> The data will be saved as a single document with the ID you typed above, inside the <code>soccer</code> collection.<br> Use a single <code>object { }</code> — the document ID comes from the field above, not from the JSON. </p> <div class="file-drop" id="dropZone"> <input type="file" id="fileInput" accept=".json" /> 📂 Click or drag &amp; drop a <strong>.json</strong> file here </div> </div> <button class="upload-btn" id="uploadBtn"> <div class="spinner" id="spinner"></div> <span id="btnText">Upload to Firestore</span> </button> <div class="log-wrap"> <div class="log-title">Upload Log</div> <div id="log"><span class="empty-log">No activity yet.</span></div> </div> <div id="rulesBox"> <h3>🔒 Permission Denied — Fix Your Firestore Rules</h3> <p>Go to <strong>Firebase Console → Firestore Database → Rules</strong> and set:</p> <pre>rules_version = '2'; service cloud.firestore { match /databases/{database}/documents { match /{document=**} { allow read, write: if true; } } }</pre> <p>⚠️ This opens full access for testing only. Add proper auth rules before going live.</p> </div> <script type="module"> import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"; import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"; const firebaseConfig = { apiKey: "AIzaSyBTEFOKEYD08IE2VAD8O1TevrIgn30tzN4", authDomain: "online-food-delivery-7f53f.firebaseapp.com", projectId: "online-food-delivery-7f53f", storageBucket: "online-food-delivery-7f53f.appspot.com", messagingSenderId: "886466466698", appId: "1:886466466698:web:f6731f824f01575abcae73" }; // Collection is always "soccer" const COLLECTION = "soccer"; let db; try { const app = initializeApp(firebaseConfig); db = getFirestore(app); log("Firebase initialized ✓", "ok"); } catch(e) { log("Firebase init failed: " + e.message, "error"); showBanner("Firebase failed to initialize: " + e.message, "error"); } function log(msg, type = "info") { const logEl = document.getElementById("log"); logEl.querySelector(".empty-log")?.remove(); const tags = { info: "INFO", ok: " OK", error: " ERR", warn: "WARN" }; const line = document.createElement("div"); line.className = `log-line ${type}`; line.innerHTML = `<span class="tag">[${tags[type]}]</span><span class="log-msg">${escHtml(msg)}</span>`; logEl.appendChild(line); logEl.scrollTop = logEl.scrollHeight; } function escHtml(s) { return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); } function showBanner(msg, type) { const b = document.getElementById("statusBanner"); b.textContent = msg; b.className = `show ${type}`; } function hideBanner() { document.getElementById("statusBanner").className = ""; } function setLoading(on) { document.getElementById("uploadBtn").disabled = on; document.getElementById("spinner").style.display = on ? "block" : "none"; document.getElementById("btnText").textContent = on ? "Uploading…" : "Upload to Firestore"; } document.getElementById("clearBtn").addEventListener("click", () => { document.getElementById("jsonInput").value = ""; hideBanner(); }); function loadFile(file) { if (!file) return; if (!file.name.endsWith(".json")) { log("Please select a .json file.", "warn"); return; } const reader = new FileReader(); reader.onload = e => { document.getElementById("jsonInput").value = e.target.result; log(`Loaded: ${file.name} (${(file.size/1024).toFixed(1)} KB)`, "info"); }; reader.onerror = () => log("Failed to read file.", "error"); reader.readAsText(file); } document.getElementById("fileInput").addEventListener("change", e => loadFile(e.target.files[0])); const dropZone = document.getElementById("dropZone"); dropZone.addEventListener("click", () => document.getElementById("fileInput").click()); dropZone.addEventListener("dragover", e => { e.preventDefault(); dropZone.classList.add("drag-over"); }); dropZone.addEventListener("dragleave", () => dropZone.classList.remove("drag-over")); dropZone.addEventListener("drop", e => { e.preventDefault(); dropZone.classList.remove("drag-over"); loadFile(e.dataTransfer.files[0]); }); document.getElementById("uploadBtn").addEventListener("click", async () => { hideBanner(); document.getElementById("rulesBox").classList.remove("show"); // Document ID = what the user typed const docId = document.getElementById("collectionName").value.trim(); const raw = document.getElementById("jsonInput").value.trim(); if (!docId) { showBanner("⚠️ Please enter a Document ID.", "warn"); log("Document ID is required.", "warn"); return; } if (!raw) { showBanner("⚠️ JSON data is empty.", "warn"); log("JSON input is empty.", "warn"); return; } let data; try { data = JSON.parse(raw); } catch (err) { showBanner("❌ Invalid JSON: " + err.message, "error"); log("Invalid JSON: " + err.message, "error"); return; } if (Array.isArray(data)) { showBanner("⚠️ Use a single object { }, not an array [ ]. One document per upload.", "warn"); log("Array detected — please use a single object for this uploader.", "warn"); return; } setLoading(true); log(`Uploading → collection: "${COLLECTION}" | doc id: "${docId}"`, "info"); try { // setDoc with the user-supplied ID into the "soccer" collection await setDoc(doc(db, COLLECTION, docId), data); log(`Saved doc "${docId}" in "${COLLECTION}" ✓`, "ok"); showBanner(`✅ Document "${docId}" uploaded successfully to "${COLLECTION}"!`, "success"); } catch (err) { log(`FAILED: ${err.code} — ${err.message}`, "error"); if (err.code === "permission-denied") { showBanner("❌ Permission denied — fix your Firestore rules. See instructions below.", "error"); document.getElementById("rulesBox").classList.add("show"); } else { showBanner(`❌ Upload failed: ${err.message}`, "error"); } } setLoading(false); }); </script> </body> </html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Firebase JSON Uploader</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0f1117;--surface:#1a1d27;--surface-alt:#22263a;--border:#2e3350;--accent:#ff6b35;--green:#22c55e;--red:#ef4444;--text:#e8eaf0;--muted:#6b7280;--mono:'JetBrains Mono','Fira Code',monospace}
+body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 16px 60px}
+h1{font-size:1.4rem;font-weight:700;text-align:center;margin-bottom:4px}
+.sub{font-size:0.8rem;color:var(--muted);text-align:center;margin-bottom:24px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;width:100%;max-width:640px;margin-bottom:16px}
+.card-title{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:10px}
+label{display:block;font-size:0.8rem;color:var(--muted);margin-bottom:5px}
+input[type=text]{width:100%;background:var(--surface-alt);border:1px solid var(--border);border-radius:7px;padding:10px 12px;font-size:0.9rem;font-family:var(--mono);color:var(--text);outline:none}
+input[type=text]:focus{border-color:var(--accent)}
+textarea{width:100%;height:200px;background:var(--surface-alt);border:1px solid var(--border);border-radius:7px;padding:10px 12px;font-size:0.78rem;font-family:var(--mono);color:var(--text);resize:vertical;outline:none;line-height:1.5}
+textarea:focus{border-color:var(--accent)}
+.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.btn-sm{font-size:0.72rem;color:var(--muted);background:none;border:none;cursor:pointer;padding:2px 6px}
+.btn-sm:hover{color:var(--red)}
+.drop{margin-top:10px;border:1.5px dashed var(--border);border-radius:7px;padding:12px;text-align:center;font-size:0.78rem;color:var(--muted);cursor:pointer}
+.drop:hover{border-color:var(--accent);color:var(--accent)}
+.drop input{display:none}
+#banner{width:100%;max-width:640px;border-radius:9px;padding:11px 14px;font-size:0.82rem;font-weight:500;margin-bottom:12px;display:none}
+#banner.show{display:block}
+#banner.error{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.4);color:#fca5a5}
+#banner.success{background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.4);color:#86efac}
+#banner.warn{background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.4);color:#fcd34d}
+.upbtn{width:100%;max-width:640px;padding:14px;background:var(--accent);color:#fff;font-size:1rem;font-weight:700;border:none;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.upbtn:disabled{opacity:0.4;cursor:not-allowed}
+.spin{width:16px;height:16px;border:2.5px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:sp 0.7s linear infinite;display:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+.log-wrap{width:100%;max-width:640px;margin-top:16px}
+.log-title{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:6px}
+#log{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:12px 14px;font-family:var(--mono);font-size:0.78rem;line-height:1.8;min-height:56px;max-height:300px;overflow-y:auto}
+.ll{display:flex;gap:8px}.ll.ok .t{color:var(--green)}.ll.err .t{color:var(--red)}.ll.warn .t{color:#f59e0b}.ll.info .t{color:var(--muted)}
+.lm{color:var(--text);word-break:break-all}
+.empty{color:var(--muted);font-style:italic;font-size:0.78rem}
+#rules{display:none;width:100%;max-width:640px;margin-top:12px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.3);border-radius:9px;padding:14px 16px}
+#rules.show{display:block}
+#rules h3{font-size:0.82rem;color:#fca5a5;margin-bottom:6px}
+#rules p{font-size:0.76rem;color:var(--muted);line-height:1.6;margin-bottom:6px}
+#rules pre{background:var(--surface-alt);border-radius:5px;padding:8px 10px;font-size:0.74rem;font-family:var(--mono);color:#86efac;overflow-x:auto}
+</style>
+</head>
+<body>
+
+<h1>🔥 Firebase JSON Uploader</h1>
+<p class="sub">Collection: <strong>soccer</strong> &nbsp;|&nbsp; Project: online-food-delivery-7f53f</p>
+
+<div id="banner"></div>
+
+<div class="card">
+  <div class="card-title">Document ID</div>
+  <label for="docId">Type the document ID to save inside <b>soccer</b></label>
+  <input type="text" id="docId" placeholder="e.g. premier_league, match_001" autocomplete="off" spellcheck="false" />
+</div>
+
+<div class="card">
+  <div class="card-title">JSON Data</div>
+  <div class="row">
+    <span style="font-size:0.8rem;color:var(--muted)">Paste your JSON</span>
+    <button class="btn-sm" onclick="document.getElementById('jsonInput').value='';hideBanner()">✕ Clear</button>
+  </div>
+  <textarea id="jsonInput" placeholder='{ "team": "Brazil", "wins": 5 }'></textarea>
+  <div class="drop" id="dropZone">
+    <input type="file" id="fileInput" accept=".json" />
+    📂 Click or drop a .json file
+  </div>
+</div>
+
+<button class="upbtn" id="uploadBtn" onclick="doUpload()">
+  <div class="spin" id="spinner"></div>
+  <span id="btnText">Upload to Firestore</span>
+</button>
+
+<div class="log-wrap">
+  <div class="log-title">Upload Log</div>
+  <div id="log"><span class="empty">No activity yet.</span></div>
+</div>
+
+<div id="rules">
+  <h3>🔒 Permission Denied — Fix Firestore Rules</h3>
+  <p>Go to <b>Firebase Console → Firestore → Rules</b> and paste:</p>
+  <pre>rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}</pre>
+  <p>⚠️ For testing only. Add proper auth rules before going live.</p>
+</div>
+
+<!-- Firebase compat (no modules, works in any browser/file) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+var db = null;
+
+// Init Firebase
+try {
+  var app = firebase.initializeApp({
+    apiKey: "AIzaSyBTEFOKEYD08IE2VAD8O1TevrIgn30tzN4",
+    authDomain: "online-food-delivery-7f53f.firebaseapp.com",
+    projectId: "online-food-delivery-7f53f",
+    storageBucket: "online-food-delivery-7f53f.appspot.com",
+    messagingSenderId: "886466466698",
+    appId: "1:886466466698:web:f6731f824f01575abcae73"
+  });
+  db = firebase.firestore();
+  addLog("Firebase initialized ✓", "ok");
+} catch(e) {
+  addLog("Firebase init error: " + e.message, "err");
+  showBanner("❌ Firebase failed: " + e.message, "error");
+}
+
+function addLog(msg, type) {
+  var logEl = document.getElementById("log");
+  var empty = logEl.querySelector(".empty");
+  if (empty) empty.remove();
+  var line = document.createElement("div");
+  line.className = "ll " + (type || "info");
+  var labels = { info:"INFO", ok:" OK ", err:" ERR", warn:"WARN" };
+  line.innerHTML = '<span class="t">[' + (labels[type]||"INFO") + ']</span><span class="lm">' + esc(msg) + '</span>';
+  logEl.appendChild(line);
+  logEl.scrollTop = logEl.scrollHeight;
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+function showBanner(msg, type) {
+  var b = document.getElementById("banner");
+  b.textContent = msg;
+  b.className = "show " + type;
+}
+
+function hideBanner() {
+  document.getElementById("banner").className = "";
+}
+
+function setLoading(on) {
+  document.getElementById("uploadBtn").disabled = on;
+  document.getElementById("spinner").style.display = on ? "block" : "none";
+  document.getElementById("btnText").textContent = on ? "Uploading…" : "Upload to Firestore";
+}
+
+// File drop/pick
+document.getElementById("dropZone").addEventListener("click", function() {
+  document.getElementById("fileInput").click();
+});
+document.getElementById("fileInput").addEventListener("change", function(e) {
+  loadFile(e.target.files[0]);
+});
+document.getElementById("dropZone").addEventListener("dragover", function(e) {
+  e.preventDefault();
+});
+document.getElementById("dropZone").addEventListener("drop", function(e) {
+  e.preventDefault();
+  loadFile(e.dataTransfer.files[0]);
+});
+
+function loadFile(file) {
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById("jsonInput").value = e.target.result;
+    addLog("Loaded: " + file.name, "info");
+  };
+  reader.readAsText(file);
+}
+
+// Main upload function
+function doUpload() {
+  addLog("Upload button clicked", "info");
+  hideBanner();
+  document.getElementById("rules").classList.remove("show");
+
+  if (!db) {
+    showBanner("❌ Firebase not ready.", "error");
+    addLog("Firebase db is null", "err");
+    return;
+  }
+
+  var docId = document.getElementById("docId").value.trim();
+  var raw = document.getElementById("jsonInput").value.trim();
+
+  addLog("Doc ID: \"" + docId + "\"", "info");
+  addLog("JSON chars: " + raw.length, "info");
+
+  if (!docId) {
+    showBanner("⚠️ Enter a Document ID first.", "warn");
+    addLog("Stopped: no document ID", "warn");
+    return;
+  }
+
+  if (!raw) {
+    showBanner("⚠️ JSON is empty.", "warn");
+    addLog("Stopped: JSON is empty", "warn");
+    return;
+  }
+
+  var data;
+  try {
+    data = JSON.parse(raw);
+    addLog("JSON parsed OK — type: " + (Array.isArray(data) ? "array[" + data.length + "]" : "object"), "info");
+  } catch(e) {
+    showBanner("❌ Invalid JSON: " + e.message, "error");
+    addLog("JSON error: " + e.message, "err");
+    return;
+  }
+
+  setLoading(true);
+
+  var docs = Array.isArray(data) ? data : [data];
+  var total = docs.length;
+  var ok = 0;
+  var fail = 0;
+  var permDenied = false;
+
+  function uploadNext(i) {
+    if (i >= total) {
+      setLoading(false);
+      if (permDenied) {
+        showBanner("❌ Permission denied — fix Firestore rules below.", "error");
+        document.getElementById("rules").classList.add("show");
+      } else if (fail > 0) {
+        showBanner("⚠️ Done: " + ok + " ok, " + fail + " failed.", "warn");
+      } else {
+        showBanner("✅ " + ok + " doc(s) uploaded to 'soccer'!", "success");
+      }
+      addLog("Done: " + ok + " ok, " + fail + " failed", fail > 0 ? "warn" : "ok");
+      return;
+    }
+
+    var item = docs[i];
+    var id = total === 1 ? docId : (item.id ? String(item.id) : docId + "_" + (i + 1));
+    var payload = Object.assign({}, item);
+    if (payload.id !== undefined) delete payload.id;
+
+    addLog("[" + (i+1) + "/" + total + "] Saving id=\"" + id + "\"...", "info");
+
+    db.collection("soccer").doc(id).set(payload)
+      .then(function() {
+        addLog("[" + (i+1) + "/" + total + "] Saved \"" + id + "\" ✓", "ok");
+        ok++;
+        uploadNext(i + 1);
+      })
+      .catch(function(err) {
+        addLog("[" + (i+1) + "/" + total + "] FAILED: " + err.code + " — " + err.message, "err");
+        fail++;
+        if (err.code === "permission-denied") {
+          permDenied = true;
+          setLoading(false);
+          showBanner("❌ Permission denied — fix Firestore rules below.", "error");
+          document.getElementById("rules").classList.add("show");
+          return;
+        }
+        uploadNext(i + 1);
+      });
+  }
+
+  uploadNext(0);
+}
+</script>
+</body>
+</html>
