@@ -1,274 +1,179 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Firebase JSON Uploader</title>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#0f1117;--surface:#1a1d27;--surface-alt:#22263a;--border:#2e3350;--accent:#ff6b35;--green:#22c55e;--red:#ef4444;--text:#e8eaf0;--muted:#6b7280;--mono:'JetBrains Mono','Fira Code',monospace}
-body{background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 16px 60px}
-h1{font-size:1.4rem;font-weight:700;text-align:center;margin-bottom:4px}
-.sub{font-size:0.8rem;color:var(--muted);text-align:center;margin-bottom:24px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;width:100%;max-width:640px;margin-bottom:16px}
-.card-title{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:10px}
-label{display:block;font-size:0.8rem;color:var(--muted);margin-bottom:5px}
-input[type=text]{width:100%;background:var(--surface-alt);border:1px solid var(--border);border-radius:7px;padding:10px 12px;font-size:0.9rem;font-family:var(--mono);color:var(--text);outline:none}
-input[type=text]:focus{border-color:var(--accent)}
-textarea{width:100%;height:200px;background:var(--surface-alt);border:1px solid var(--border);border-radius:7px;padding:10px 12px;font-size:0.78rem;font-family:var(--mono);color:var(--text);resize:vertical;outline:none;line-height:1.5}
-textarea:focus{border-color:var(--accent)}
-.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-.btn-sm{font-size:0.72rem;color:var(--muted);background:none;border:none;cursor:pointer;padding:2px 6px}
-.btn-sm:hover{color:var(--red)}
-.drop{margin-top:10px;border:1.5px dashed var(--border);border-radius:7px;padding:12px;text-align:center;font-size:0.78rem;color:var(--muted);cursor:pointer}
-.drop:hover{border-color:var(--accent);color:var(--accent)}
-.drop input{display:none}
-#banner{width:100%;max-width:640px;border-radius:9px;padding:11px 14px;font-size:0.82rem;font-weight:500;margin-bottom:12px;display:none}
-#banner.show{display:block}
-#banner.error{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.4);color:#fca5a5}
-#banner.success{background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.4);color:#86efac}
-#banner.warn{background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.4);color:#fcd34d}
-.upbtn{width:100%;max-width:640px;padding:14px;background:var(--accent);color:#fff;font-size:1rem;font-weight:700;border:none;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
-.upbtn:disabled{opacity:0.4;cursor:not-allowed}
-.spin{width:16px;height:16px;border:2.5px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:sp 0.7s linear infinite;display:none}
-@keyframes sp{to{transform:rotate(360deg)}}
-.log-wrap{width:100%;max-width:640px;margin-top:16px}
-.log-title{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:6px}
-#log{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:12px 14px;font-family:var(--mono);font-size:0.78rem;line-height:1.8;min-height:56px;max-height:300px;overflow-y:auto}
-.ll{display:flex;gap:8px}.ll.ok .t{color:var(--green)}.ll.err .t{color:var(--red)}.ll.warn .t{color:#f59e0b}.ll.info .t{color:var(--muted)}
-.lm{color:var(--text);word-break:break-all}
-.empty{color:var(--muted);font-style:italic;font-size:0.78rem}
-#rules{display:none;width:100%;max-width:640px;margin-top:12px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.3);border-radius:9px;padding:14px 16px}
-#rules.show{display:block}
-#rules h3{font-size:0.82rem;color:#fca5a5;margin-bottom:6px}
-#rules p{font-size:0.76rem;color:var(--muted);line-height:1.6;margin-bottom:6px}
-#rules pre{background:var(--surface-alt);border-radius:5px;padding:8px 10px;font-size:0.74rem;font-family:var(--mono);color:#86efac;overflow-x:auto}
-</style>
+    <title>Firestore Match Uploader</title>
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getFirestore, collection, doc, setDoc, writeBatch } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+        // Your Firebase config (replace with your own if needed)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBTEFOKEYD08IE2VAD8O1TevrIgn30tzN4",
+            authDomain: "online-food-delivery-7f53f.firebaseapp.com",
+            projectId: "online-food-delivery-7f53f",
+            storageBucket: "online-food-delivery-7f53f.appspot.com",
+            messagingSenderId: "886466466698",
+            appId: "1:886466466698:web:f6731f824f01575abcae73"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.uploadMatches = async function() {
+            const jsonText = document.getElementById('jsonInput').value;
+            if (!jsonText.trim()) {
+                alert('Please paste JSON data');
+                return;
+            }
+
+            let data;
+            try {
+                data = JSON.parse(jsonText);
+            } catch(e) {
+                alert('Invalid JSON: ' + e.message);
+                return;
+            }
+
+            const events = data.events;
+            if (!events || !Array.isArray(events)) {
+                alert('JSON must contain an "events" array');
+                return;
+            }
+
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = 'Processing...';
+
+            // Collect all unique leagues, teams, matches
+            const leaguesMap = new Map();   // leagueId -> data
+            const teamsMap = new Map();     // teamId -> data
+            const matchesList = [];
+
+            for (const ev of events) {
+                // ----- League (using uniqueTournament) -----
+                const league = ev.tournament.uniqueTournament || ev.tournament;
+                const leagueId = String(league.id);
+                if (!leaguesMap.has(leagueId)) {
+                    leaguesMap.set(leagueId, {
+                        id: leagueId,
+                        name: league.name,
+                        slug: league.slug,
+                        category: league.category?.name || '',
+                        season: ev.season?.name || '',
+                        year: ev.season?.year || '',
+                        primaryColor: league.primaryColorHex || '',
+                        secondaryColor: league.secondaryColorHex || '',
+                        isGroup: ev.tournament.isGroup || false,
+                        groupName: ev.tournament.groupName || null
+                    });
+                }
+
+                // ----- Home Team -----
+                const home = ev.homeTeam;
+                const homeId = String(home.id);
+                if (!teamsMap.has(homeId)) {
+                    teamsMap.set(homeId, {
+                        id: homeId,
+                        name: home.name,
+                        slug: home.slug,
+                        shortName: home.shortName,
+                        country: home.country?.alpha2 || '',
+                        ranking: home.ranking || null,
+                        teamColors: home.teamColors || {}
+                    });
+                }
+
+                // ----- Away Team -----
+                const away = ev.awayTeam;
+                const awayId = String(away.id);
+                if (!teamsMap.has(awayId)) {
+                    teamsMap.set(awayId, {
+                        id: awayId,
+                        name: away.name,
+                        slug: away.slug,
+                        shortName: away.shortName,
+                        country: away.country?.alpha2 || '',
+                        ranking: away.ranking || null,
+                        teamColors: away.teamColors || {}
+                    });
+                }
+
+                // ----- Match -----
+                matchesList.push({
+                    id: String(ev.id),
+                    leagueId: leagueId,
+                    homeTeamId: homeId,
+                    awayTeamId: awayId,
+                    startTimestamp: ev.startTimestamp,
+                    status: ev.status,
+                    round: ev.roundInfo?.round || 0,
+                    groupName: ev.tournament.groupName || null,
+                    slug: ev.slug,
+                    hasGlobalHighlights: ev.hasGlobalHighlights || false,
+                    customId: ev.customId || ''
+                });
+            }
+
+            // Use batched writes (max 500 per batch)
+            const BATCH_LIMIT = 490;
+            let batches = [];
+            let currentBatch = writeBatch(db);
+            let opCount = 0;
+
+            function addToBatch(ref, data) {
+                if (opCount >= BATCH_LIMIT) {
+                    batches.push(currentBatch);
+                    currentBatch = writeBatch(db);
+                    opCount = 0;
+                }
+                currentBatch.set(ref, data, { merge: true });
+                opCount++;
+            }
+
+            // 1. Upload leagues
+            for (const [id, leagueData] of leaguesMap) {
+                const ref = doc(db, 'leagues', id);
+                addToBatch(ref, leagueData);
+            }
+
+            // 2. Upload teams
+            for (const [id, teamData] of teamsMap) {
+                const ref = doc(db, 'teams', id);
+                addToBatch(ref, teamData);
+            }
+
+            // 3. Upload matches
+            for (const match of matchesList) {
+                const ref = doc(db, 'matches', match.id);
+                addToBatch(ref, match);
+            }
+
+            // Push last batch
+            if (opCount > 0) batches.push(currentBatch);
+
+            // Commit all batches
+            let completed = 0;
+            for (let i = 0; i < batches.length; i++) {
+                try {
+                    await batches[i].commit();
+                    completed++;
+                    statusDiv.innerHTML = `Progress: ${completed}/${batches.length} batches committed...`;
+                } catch (err) {
+                    console.error(err);
+                    statusDiv.innerHTML = `Error in batch ${i+1}: ${err.message}`;
+                    return;
+                }
+            }
+
+            statusDiv.innerHTML = `✅ Success! Uploaded ${leaguesMap.size} leagues, ${teamsMap.size} teams, ${matchesList.length} matches.`;
+        };
+    </script>
 </head>
 <body>
-
-<h1>🔥 Firebase JSON Uploader</h1>
-<p class="sub">Collection: <strong>soccer</strong> &nbsp;|&nbsp; Project: online-food-delivery-7f53f</p>
-
-<div id="banner"></div>
-
-<div class="card">
-  <div class="card-title">Document ID</div>
-  <label for="docId">Type the document ID to save inside <b>soccer</b></label>
-  <input type="text" id="docId" placeholder="e.g. premier_league, match_001" autocomplete="off" spellcheck="false" />
-</div>
-
-<div class="card">
-  <div class="card-title">JSON Data</div>
-  <div class="row">
-    <span style="font-size:0.8rem;color:var(--muted)">Paste your JSON</span>
-    <button class="btn-sm" onclick="document.getElementById('jsonInput').value='';hideBanner()">✕ Clear</button>
-  </div>
-  <textarea id="jsonInput" placeholder='{ "team": "Brazil", "wins": 5 }'></textarea>
-  <div class="drop" id="dropZone">
-    <input type="file" id="fileInput" accept=".json" />
-    📂 Click or drop a .json file
-  </div>
-</div>
-
-<button class="upbtn" id="uploadBtn" onclick="doUpload()">
-  <div class="spin" id="spinner"></div>
-  <span id="btnText">Upload to Firestore</span>
-</button>
-
-<div class="log-wrap">
-  <div class="log-title">Upload Log</div>
-  <div id="log"><span class="empty">No activity yet.</span></div>
-</div>
-
-<div id="rules">
-  <h3>🔒 Permission Denied — Fix Firestore Rules</h3>
-  <p>Go to <b>Firebase Console → Firestore → Rules</b> and paste:</p>
-  <pre>rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if true;
-    }
-  }
-}</pre>
-  <p>⚠️ For testing only. Add proper auth rules before going live.</p>
-</div>
-
-<!-- Firebase compat (no modules, works in any browser/file) -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
-<script>
-var db = null;
-
-// Init Firebase
-try {
-  var app = firebase.initializeApp({
-    apiKey: "AIzaSyBTEFOKEYD08IE2VAD8O1TevrIgn30tzN4",
-    authDomain: "online-food-delivery-7f53f.firebaseapp.com",
-    projectId: "online-food-delivery-7f53f",
-    storageBucket: "online-food-delivery-7f53f.appspot.com",
-    messagingSenderId: "886466466698",
-    appId: "1:886466466698:web:f6731f824f01575abcae73"
-  });
-  db = firebase.firestore();
-  addLog("Firebase initialized ✓", "ok");
-} catch(e) {
-  addLog("Firebase init error: " + e.message, "err");
-  showBanner("❌ Firebase failed: " + e.message, "error");
-}
-
-function addLog(msg, type) {
-  var logEl = document.getElementById("log");
-  var empty = logEl.querySelector(".empty");
-  if (empty) empty.remove();
-  var line = document.createElement("div");
-  line.className = "ll " + (type || "info");
-  var labels = { info:"INFO", ok:" OK ", err:" ERR", warn:"WARN" };
-  line.innerHTML = '<span class="t">[' + (labels[type]||"INFO") + ']</span><span class="lm">' + esc(msg) + '</span>';
-  logEl.appendChild(line);
-  logEl.scrollTop = logEl.scrollHeight;
-}
-
-function esc(s) {
-  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-}
-
-function showBanner(msg, type) {
-  var b = document.getElementById("banner");
-  b.textContent = msg;
-  b.className = "show " + type;
-}
-
-function hideBanner() {
-  document.getElementById("banner").className = "";
-}
-
-function setLoading(on) {
-  document.getElementById("uploadBtn").disabled = on;
-  document.getElementById("spinner").style.display = on ? "block" : "none";
-  document.getElementById("btnText").textContent = on ? "Uploading…" : "Upload to Firestore";
-}
-
-// File drop/pick
-document.getElementById("dropZone").addEventListener("click", function() {
-  document.getElementById("fileInput").click();
-});
-document.getElementById("fileInput").addEventListener("change", function(e) {
-  loadFile(e.target.files[0]);
-});
-document.getElementById("dropZone").addEventListener("dragover", function(e) {
-  e.preventDefault();
-});
-document.getElementById("dropZone").addEventListener("drop", function(e) {
-  e.preventDefault();
-  loadFile(e.dataTransfer.files[0]);
-});
-
-function loadFile(file) {
-  if (!file) return;
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    document.getElementById("jsonInput").value = e.target.result;
-    addLog("Loaded: " + file.name, "info");
-  };
-  reader.readAsText(file);
-}
-
-// Main upload function
-function doUpload() {
-  addLog("Upload button clicked", "info");
-  hideBanner();
-  document.getElementById("rules").classList.remove("show");
-
-  if (!db) {
-    showBanner("❌ Firebase not ready.", "error");
-    addLog("Firebase db is null", "err");
-    return;
-  }
-
-  var docId = document.getElementById("docId").value.trim();
-  var raw = document.getElementById("jsonInput").value.trim();
-
-  addLog("Doc ID: \"" + docId + "\"", "info");
-  addLog("JSON chars: " + raw.length, "info");
-
-  if (!docId) {
-    showBanner("⚠️ Enter a Document ID first.", "warn");
-    addLog("Stopped: no document ID", "warn");
-    return;
-  }
-
-  if (!raw) {
-    showBanner("⚠️ JSON is empty.", "warn");
-    addLog("Stopped: JSON is empty", "warn");
-    return;
-  }
-
-  var data;
-  try {
-    data = JSON.parse(raw);
-    addLog("JSON parsed OK — type: " + (Array.isArray(data) ? "array[" + data.length + "]" : "object"), "info");
-  } catch(e) {
-    showBanner("❌ Invalid JSON: " + e.message, "error");
-    addLog("JSON error: " + e.message, "err");
-    return;
-  }
-
-  setLoading(true);
-
-  var docs = Array.isArray(data) ? data : [data];
-  var total = docs.length;
-  var ok = 0;
-  var fail = 0;
-  var permDenied = false;
-
-  function uploadNext(i) {
-    if (i >= total) {
-      setLoading(false);
-      if (permDenied) {
-        showBanner("❌ Permission denied — fix Firestore rules below.", "error");
-        document.getElementById("rules").classList.add("show");
-      } else if (fail > 0) {
-        showBanner("⚠️ Done: " + ok + " ok, " + fail + " failed.", "warn");
-      } else {
-        showBanner("✅ " + ok + " doc(s) uploaded to 'soccer'!", "success");
-      }
-      addLog("Done: " + ok + " ok, " + fail + " failed", fail > 0 ? "warn" : "ok");
-      return;
-    }
-
-    var item = docs[i];
-    var id = total === 1 ? docId : (item.id ? String(item.id) : docId + "_" + (i + 1));
-    var payload = Object.assign({}, item);
-    if (payload.id !== undefined) delete payload.id;
-
-    addLog("[" + (i+1) + "/" + total + "] Saving id=\"" + id + "\"...", "info");
-
-    db.collection("soccer").doc(id).set(payload)
-      .then(function() {
-        addLog("[" + (i+1) + "/" + total + "] Saved \"" + id + "\" ✓", "ok");
-        ok++;
-        uploadNext(i + 1);
-      })
-      .catch(function(err) {
-        addLog("[" + (i+1) + "/" + total + "] FAILED: " + err.code + " — " + err.message, "err");
-        fail++;
-        if (err.code === "permission-denied") {
-          permDenied = true;
-          setLoading(false);
-          showBanner("❌ Permission denied — fix Firestore rules below.", "error");
-          document.getElementById("rules").classList.add("show");
-          return;
-        }
-        uploadNext(i + 1);
-      });
-  }
-
-  uploadNext(0);
-}
-</script>
+    <h2>📤 Upload Match JSON to Firestore</h2>
+    <p>Paste your JSON (must contain an <code>events</code> array). Works for any league (World Cup, Premier League, etc.)</p>
+    <textarea id="jsonInput" rows="15" cols="80" placeholder='{"events": [...]}'></textarea><br/>
+    <button onclick="uploadMatches()">Upload to Firestore</button>
+    <div id="status" style="margin-top: 20px; font-weight: bold;"></div>
 </body>
 </html>
