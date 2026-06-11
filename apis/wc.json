@@ -12,7 +12,7 @@
     "m3u81":"https://live-manifest.production-public.tubi.io/live/d8c035df-1076-4aa6-8628-da2ec80781f9/playlist.m3u8",
     "m3u82":"",
     "m3u83":"",
-    "m3u84":"http://69.30.245.50/live/cctv1.m3u8",
+    "m3u84":"https://live-oneapp-prd-news.akamaized.net/Content/CMAF_OL2-CTR-4s-v2/Live/channel(kvea)/master.mpd",
     "m3u85":"https://bein-xtra-bein.amagi.tv/playlist.m3u8",
     "m3u86":"https://d3qs3d2rkhfqrt.cloudfront.net/out/v1/b17adfe543354fdd8d189b110617cddd/index.m3u8",
     "m3u87":""
