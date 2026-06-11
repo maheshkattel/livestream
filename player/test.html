@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shaka Player</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            background: #000;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            font-family: sans-serif;
+        }
+        #shaka-wrapper, #iframe-container {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+        video, iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #000;
+            object-fit: contain;
+        }
+        .shaka-spinner-container { display: none !important; }
+    </style>
+</head>
+<body>
+    <div id="main-player-container">
+        <div id="shaka-wrapper" style="display:none;">
+            <video id="video-element" autoplay playsinline preload="metadata"></video>
+        </div>
+        <div id="iframe-container" style="display:none;">
+            <iframe id="external-iframe" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+        </div>
+    </div>
+
+    <script>
+    // Patch missing console.debug (some mobile browsers lack it)
+    if (!console.debug) console.debug = console.log;
+
+    // ── Hardcoded playlist (no fetch needed) ──────────────────────────
+    const PLAYLIST = {
+        "telemundo": {
+            "url": "https://live-oneapp-prd-news.akamaized.net/Content/CMAF_OL2-CTR-4s-v2/Live/channel(kvea)/master.mpd",
+            "clearKeys": {
+                "ce7ab3022e753307997f58afe001bac4": "72d631a66e635c60829a0fe7705516c1"
+            }
+        },
+        "sportv": {
+            "url": "https://a151aivottlinear-a.akamaihd.net/OTTB/sin-nitro/live/dash/enc/m7duvnk2bu/out/v1/d1ad69118b5647309b1eb7213affdb3d/cenc.mpd",
+            "clearKeys": {
+                "4bbcff3289d457b4dd5dbdd21221de9a": "c4906b9a9f8dda3c0725bddb8c497733"
+            }
+        },
+        "mob3": {
+            "type": "iframe",
+            "url": "https://hlsplayers.pages.dev/iframe?url=https://embedindia.st/embed/wc/2026-06-11/mex-rsa/telemundo"
+        }
+    };
+    // ─────────────────────────────────────────────────────────────────
+
+    async function initApp() {
+        shaka.polyfill.installAll();
+        if (!shaka.Player.isBrowserSupported()) return;
+
+        const video    = document.getElementById('video-element');
+        const shakaDiv = document.getElementById('shaka-wrapper');
+        const iframeDiv= document.getElementById('iframe-container');
+        const iframeEl = document.getElementById('external-iframe');
+
+        const params  = new URLSearchParams(window.location.search);
+        const id      = params.get('id') || 'telemundo';
+        const entry   = PLAYLIST[id];
+
+        if (!entry) { document.body.style.color='#fff'; document.body.innerText='Unknown id: '+id; return; }
+
+        if (entry.type === 'iframe') {
+            // iframe mode
+            iframeDiv.style.display = 'block';
+            iframeEl.src = entry.url.trim();
+        } else {
+            // Shaka DASH + ClearKey mode
+            shakaDiv.style.display = 'block';
+
+            const player = new shaka.Player();
+            await player.attach(video);
+
+            player.configure({
+                streaming: {
+                    bufferingGoal: 15,
+                    rebufferingGoal: 5,
+                    useNativeHlsOnSafari: true
+                },
+                drm: {
+                    clearKeys: entry.clearKeys || {}
+                }
+            });
+
+            player.addEventListener('error', e => console.error('Shaka error', e.detail));
+
+            try {
+                await player.load(entry.url.trim());
+                video.play().catch(() => {});
+            } catch (err) {
+                console.error('Load failed', err);
+                // Auto-fallback to iframe embed on failure
+                shakaDiv.style.display = 'none';
+                iframeDiv.style.display = 'block';
+                iframeEl.src = "https://hlsplayers.pages.dev/iframe?url=https://embedindia.st/embed/wc/2026-06-11/mex-rsa/telemundo";
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', initApp);
+    if (document.readyState === 'complete') initApp();
+    </script>
+</body>
+</html>
