@@ -1,14 +1,14 @@
 [
   { 
     "id":"wc",
-    "webviewlink":"https://maheshkattel.github.io/livestream/match_not_started.html",
-    "webviewlink1":"https://",
+    "webviewlink":"https://streams.center/embed/ch2.php",
+    "webviewlink1":"",
     "webviewlink2":"",
     "webviewlink3":"",
     "webviewlink4":"",
     "webviewlink5":"",
-    "webviewlink6":"",
-    "webviewlink7":"",
+    "webviewlink6":"https://streams.center/embed/ch1.php",
+    "webviewlink7":"https://streams.center/embed/ch3.php",
     "m3u8":"https://aegis-cloudfront-1.tubi.video/8d9284ec-c451-4e51-a1d4-d16e5c8972af/index.m3u8",
     "m3u81":"",
     "m3u82":"",
