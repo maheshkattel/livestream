@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Phala TV - HLS Player</title>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css">
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="https://cdn.plyr.io/3.6.2/plyr.polyfilled.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { background: #000; height: 100vh; width: 100vw; overflow: hidden; }
+    #player-wrap { width: 100%; height: 100vh; }
+    .plyr, .plyr video { width: 100% !important; height: 100vh !important; }
+    .plyr--video { height: 100vh !important; }
+    #error-msg {
+      display: none; position: fixed; inset: 0; background: #000;
+      color: #e50000; font-size: 14px; text-align: center;
+      align-items: center; justify-content: center; font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div id="player-wrap">
+    <video id="player" controls preload="metadata" playsinline></video>
+  </div>
+  <div id="error-msg">No stream URL provided.</div>
+
+  <script>
+    (function () {
+      const params   = new URLSearchParams(window.location.search);
+      const videoUrl = params.get('url');
+
+      if (!videoUrl) {
+        document.getElementById('error-msg').style.display = 'flex';
+        document.getElementById('player-wrap').style.display = 'none';
+        return;
+      }
+
+      const video = document.getElementById('player');
+      const opts  = { controls: ['play-large','play','progress','current-time','mute','volume','fullscreen'] };
+
+      if (Hls.isSupported()) {
+        const hls = new Hls({ maxMaxBufferLength: 60 });
+        hls.loadSource(videoUrl);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, function () {
+          const heights = hls.levels.map(l => l.height).filter(Boolean);
+          if (heights.length > 1) {
+            opts.quality = {
+              default:  heights[0],
+              options:  heights,
+              forced:   true,
+              onChange: (h) => {
+                hls.levels.forEach((l, i) => { if (l.height === h) hls.currentLevel = i; });
+              }
+            };
+          }
+          new Plyr(video, opts);
+        });
+        window._hls = hls;
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        // Safari native HLS
+        video.src = videoUrl;
+        new Plyr(video, opts);
+      } else {
+        document.getElementById('error-msg').innerText = 'HLS not supported on this browser.';
+        document.getElementById('error-msg').style.display = 'flex';
+      }
+    })();
+  </script>
+</body>
+</html>
