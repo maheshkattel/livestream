@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Custom Multi-Player</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { background: #000; height: 100vh; width: 100vw; overflow: hidden; font-family: sans-serif; }
+        #shaka-container, #iframe-container { position: absolute; inset: 0; width: 100%; height: 100%; display: none; }
+        video, iframe { width: 100%; height: 100%; border: none; object-fit: contain; }
+    </style>
+</head>
+<body>
+
+    <div id="shaka-container" data-shaka-player-container>
+        <video id="video-element" autoplay playsinline></video>
+    </div>
+
+    <div id="iframe-container">
+        <iframe id="external-iframe" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+    </div>
+
+    <script>
+        async function initPlayer() {
+            // 1. Parse the stream ID from the URL (?id=something)
+            const urlParams = new URLSearchParams(window.location.search);
+            const streamId = urlParams.get('id');
+            
+            if (!streamId) {
+                alert("Please add a stream ID to the URL. Example: ?id=telemundo");
+                return;
+            }
+
+            try {
+                // 2. Fetch your stream configuration mapping
+                const response = await fetch('playlist.json');
+                const playlist = await response.json();
+                const streamData = playlist[streamId];
+
+                if (!streamData) {
+                    alert("Stream ID not found in playlist.json");
+                    return;
+                }
+
+                const shakaContainer = document.getElementById('shaka-container');
+                const iframeContainer = document.getElementById('iframe-container');
+
+                // Route A: Handle standard Iframe Embeds
+                if (streamData.type === 'iframe') {
+                    iframeContainer.style.display = 'block';
+                    document.getElementById('external-iframe').src = streamData.url;
+                } 
+                // Route B: Handle live streams with Shaka Player
+                else {
+                    shakaContainer.style.display = 'block';
+                    const video = document.getElementById('video-element');
+                    
+                    // Initialize Shaka Player Instance
+                    const player = new shaka.Player(video);
+                    
+                    // Link Shaka UI Controls overlay
+                    const ui = new shaka.ui.Overlay(player, shakaContainer, video);
+
+                    // Configure playback goals and DRM ClearKeys if provided
+                    player.configure({
+                        streaming: {
+                            bufferingGoal: 15,
+                            rebufferingGoal: 5,
+                            jumpLargeGaps: true
+                        },
+                        drm: {
+                            clearKeys: streamData.clearKeys || {}
+                        }
+                    });
+
+                    // Load the manifest URL (.mpd or .m3u8)
+                    await player.load(streamData.url);
+                    console.log("Stream loaded successfully!");
+                }
+
+            } catch (error) {
+                console.error("Initialization error:", error);
+            }
+        }
+
+        // Run when the browser is fully loaded
+        document.addEventListener('shaka-ui-loaded', initPlayer);
+    </script>
+</body>
+</html>
