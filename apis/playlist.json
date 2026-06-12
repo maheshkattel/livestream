@@ -1,13 +1,17 @@
 {
-  "2mob1": {
-    "type": "iframe",
-    "url": "https://hlsplayers.pages.dev/mob2?url=https://storage.googleapis.com/hynvessrworov1/mux_video_ts1/index-1.m3u8"
+  "mob1": {
+    "engine": "plyr",
+    "url": "https://storage.googleapis.com/hynvessrworov1/mux_video_ts1/index-1.m3u8"
   },
   "telemundo": {
-    "type": "shaka",
+    "engine": "shaka",
     "url": "https://live-oneapp-prd-news.akamaized.net/Content/CMAF_OL2-CTR-4s-v1/Live/channel(kvea)/master.mpd",
     "clearKeys": {
       "ce7ab3022e753307997f58afe001bac4": "72d631a66e635c60829a0fe7705516c1"
     }
+  },
+  "embed-channel": {
+    "engine": "iframe",
+    "url": "https://embedindia.st/embed/wc/example-stream"
   }
 }
