@@ -3,90 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universal Streaming Core</title>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    <script src="https://cdn.plyr.io/3.6.2/plyr.polyfilled.js"></script>
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css" />
-
+    <title>Live Stream Gateway</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { background: #000; height: 100vh; width: 100vw; overflow: hidden; }
-        .view-layer { position: absolute; inset: 0; width: 100%; height: 100%; display: none; }
-        video, iframe { width: 100%; height: 100%; border: none; background: #000; object-fit: contain; }
-        .plyr { height: 100% !important; }
+        html, body { background: #000; height: 100vh; width: 100vw; overflow: hidden; font-family: sans-serif; }
+        #wrapper { position: absolute; inset: 0; width: 100%; height: 100%; }
+        iframe { width: 100%; height: 100%; border: none; background: #000; }
+        #error-msg { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #fff; display: none; text-align: center; }
     </style>
 </head>
 <body>
 
-    <div id="shaka-layer" class="view-layer" data-shaka-player-container>
-        <video id="shaka-video" autoplay playsinline></video>
+    <div id="error-msg">
+        <h3>No Stream Requested</h3>
+        <p>Please add ?id=telemundo to your URL link.</p>
     </div>
 
-    <div id="plyr-layer" class="view-layer">
-        <video id="plyr-video" controls playsinline class="plyr"></video>
-    </div>
-
-    <div id="iframe-layer" class="view-layer">
-        <iframe id="sandbox-iframe" sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation" allowfullscreen></iframe>
+    <div id="wrapper">
+        <iframe id="player-frame" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
     </div>
 
     <script>
-        async function runUniversalEngine() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const channelId = urlParams.get('id');
-            if (!channelId) return;
+        async function initContainer() {
+            const params = new URLSearchParams(window.location.search);
+            const streamId = params.get('id');
+
+            if (!streamId) {
+                document.getElementById('error-msg').style.display = 'block';
+                return;
+            }
 
             try {
                 const response = await fetch('playlist.json');
                 const playlist = await response.json();
-                const target = playlist[channelId];
-                if (!target) return;
+                const target = playlist[streamId];
 
-                // TECHNIQUE A: DRM DASH PROCESSING
-                if (target.engine === 'shaka') {
-                    document.getElementById('shaka-layer').style.display = 'block';
-                    const video = document.getElementById('shaka-video');
-                    const player = new shaka.Player(video);
-                    new shaka.ui.Overlay(player, document.getElementById('shaka-layer'), video);
-                    
-                    player.configure({
-                        streaming: { bufferingGoal: 15, rebufferingGoal: 5, jumpLargeGaps: true },
-                        drm: { clearKeys: target.clearKeys || {} }
-                    });
-                    await player.load(target.url);
-                } 
-                // TECHNIQUE B: HIGH BUFFER HLS PLAYBACK
-                else if (target.engine === 'plyr') {
-                    document.getElementById('plyr-layer').style.display = 'block';
-                    const video = document.getElementById('plyr-video');
-                    
-                    if (Hls.isSupported()) {
-                        const hls = new Hls({ maxMaxBufferLength: 100 });
-                        hls.loadSource(target.url);
-                        hls.attachMedia(video);
-                        hls.on(Hls.Events.MANIFEST_PARSED, () => new Plyr(video));
-                    } else {
-                        video.src = target.url;
-                        new Plyr(video);
-                    }
-                } 
-                // TECHNIQUE C: SANDBOX EMBED WRAPPING
-                else if (target.engine === 'iframe') {
-                    document.getElementById('iframe-layer').style.display = 'block';
-                    document.getElementById('sandbox-iframe').src = target.url;
+                if (target && target.url) {
+                    // Set the source directly to their verified running player wrapper
+                    document.getElementById('player-frame').src = target.url.trim();
+                } else {
+                    document.getElementById('error-msg').innerText = `Channel "${streamId}" not found in playlist.json.`;
+                    document.getElementById('error-msg').style.display = 'block';
                 }
-
-            } catch (err) {
-                console.error("Playback Initialization Failure:", err);
+            } catch (e) {
+                console.error("Failed to parse configurations", e);
             }
         }
-
-        document.addEventListener('shaka-ui-loaded', runUniversalEngine);
-        // Fallback execution option if Shaka UI framework delays tracking initialization
-        setTimeout(() => { if(document.getElementById('shaka-layer').style.display === 'none' && !window.playerInitialized) runUniversalEngine(); }, 1200);
+        window.addEventListener('DOMContentLoaded', initContainer);
     </script>
 </body>
 </html>
