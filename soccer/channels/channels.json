@@ -3,6 +3,9 @@
     "name": "tsn3",
     "type": "iframe",
     "url": "https://hlsplayers.pages.dev/mpd?url=https://live-pv-ta.amazon.fastly-edge.com/syd-nitro/live/clients/dash/enc/lzhmuzmjsl/out/v1/c171eeb214c749f2b351c79df317b21e/cenc.mpd&key1=f5c2b30eac11be1e8cdfc9585f5fe6af&key2=a8198d17bf9b0da77450fbb919a38b2d",
+    "sport": "",
+    "language": "english",
+    "country": "",
     "logo": ""
   },
   {
@@ -12,6 +15,9 @@
     "clearKeys": {
       "220d8978f3fd45b696137c5b94f7a264": "220d8978f3fd45b696137c5b94f7a264"
     },
+    "sport": "",
+    "language": "english",
+    "country": "",
     "logo": ""
   },
   {
@@ -21,6 +27,9 @@
     "clearKeys": {
       "c1a0ac1044a433d0856ccdc08f245084": "7f0e8800a6d63d7915ac181bb88ce813"
     },
+    "sport": "",
+    "language": "english",
+    "country": "",
     "logo": ""
   },
   {
@@ -30,6 +39,9 @@
     "clearKeys": {
       "433ffba670963e70857859a9dff4be04": "51ede3a821229fe81e71282c8eff80e3"
     },
+    "sport": "",
+    "language": "english",
+    "country": "",
     "logo": ""
   },
   {
@@ -39,6 +51,9 @@
     "clearKeys": {
       "ce7ab3022e753307997f58afe001bac4": "72d631a66e635c60829a0fe7705516c1"
     },
+    "sport": "",
+    "language": "spanish",
+    "country": "",
     "logo": ""
   },
   {
@@ -48,12 +63,18 @@
     "clearKeys": {
       "4bbcff3289d457b4dd5dbdd21221de9a": "c4906b9a9f8dda3c0725bddb8c497733"
     },
+    "sport": "",
+    "language": "english",
+    "country": "",
     "logo": ""
   },
   {
     "name": "fubo",
     "type": "iframe",
     "url": "https://hlsplayers.pages.dev/player3?url=https://live-manifest.production-public.tubi.io/live/d8c035df-1076-4aa6-8628-da2ec80781f9/playlist.m3u8",
+    "sport": "",
+    "language": "english",
+    "country": "",
     "logo": ""
   },
   {
@@ -63,6 +84,9 @@
     "clearKeys": {
       "11223344556677889900112233445566": "4b80724d0ef86bcb2c21f7999d67739d"
     },
+    "sport": "",
+    "language": "english",
+    "country": "",
     "logo": ""
   },
   {
@@ -72,6 +96,9 @@
     "clearKeys": {
       "c3b32b23081b5486ae5176da9c358808": "4708b352ee1d50ccdf94af9d2a952ed8"
     },
+    "sport": "",
+    "language": "english",
+    "country": "",
     "logo": ""
   }
 ]
