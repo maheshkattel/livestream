@@ -1,14 +1,14 @@
 [
   { 
     "id":"wc",
-    "webviewlink":"https://maheshkattel.github.io/livestream/apis/shaka.html?id=wcstream",
-    "webviewlink1":"https://maheshkattel.github.io/livestream/apis/hsports.html",
+    "webviewlink":"https://maheshkattel.github.io/livestream/apis/fifatv.html",
+    "webviewlink1":"",
     "webviewlink2":"https://maheshkattel.github.io/livestream/apis/fifatv.html",
     "webviewlink3":"",
     "webviewlink4":"",
     "webviewlink5":"",
    "webviewlink6":"https://streams.center/embed/ch2.php", "webviewlink7":"https://streams.center/embed/ch3.php",
-    "m3u8":"https://maheshkattel.github.io/livestream/apis/shaka.html?id=wcstream",
+    "m3u8":"",
     "m3u81":"https://maheshkattel.github.io/livestream/apis/fiftv.html",
     "m3u82":"https://maheshkattel.github.io/livestream/apis/hsports.html",
     "m3u83":"",
