@@ -1,0 +1,422 @@
+[
+  {
+    "id": 201,
+    "title": "Historic Drama: Qatar Steals Stoppage-Time Draw Against Switzerland",
+    "description": "Boualem Khoukhi scored a dramatic 90th-minute header to secure Qatar's first-ever FIFA World Cup point in a gritty 1-1 thriller against Switzerland.",
+    "link": "/news/football/world-cup-qatar-switzerland-draw",
+    "category": "Football",
+    "league": "FIFA World Cup",
+    "league_id": 16,
+    "published_at": "2026-06-14",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Football player celebrating a goal under stadium lights"
+    }
+  },
+  {
+    "id": 202,
+    "title": "PSG Secure Back-to-Back Crowns Following Tense Penalty Shootout Win Over Arsenal",
+    "description": "Paris Saint-Germain matched historical records by capturing consecutive European titles, defeating Arsenal 4-3 on penalties after a fierce 1-1 draw.",
+    "link": "/news/football/psg-arsenal-ucl-final-results",
+    "category": "Football",
+    "league": "UEFA Champions League",
+    "league_id": 7,
+    "published_at": "2026-05-31",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Close up of stadium grass with pitch lines visible"
+    }
+  },
+  {
+    "id": 203,
+    "title": "Atalanta Stun Athletic Bilbao to Lift UEFA Europa League Trophy",
+    "description": "A brilliant hat-trick in Dublin secured Atalanta their latest European trophy, overwhelming a highly favored Athletic Bilbao side 3-1.",
+    "link": "/news/football/atalanta-win-europa-league-final",
+    "category": "Football",
+    "league": "UEFA Europa League",
+    "league_id": 676,
+    "published_at": "2026-05-20",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Wide view of football match kicking off in front of crowds"
+    }
+  },
+  {
+    "id": 204,
+    "title": "Manchester City Secure Fifth Consecutive English Premier League Trophy",
+    "description": "With a comfortable 3-0 victory on the final day of the season, Manchester City held off Arsenal to secure an unprecedented fifth consecutive domestic league title.",
+    "link": "/news/football/man-city-win-premier-league",
+    "category": "Football",
+    "league": "English Premier League",
+    "league_id": 17,
+    "published_at": "2026-05-17",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Empty modern football stadium stands"
+    }
+  },
+  {
+    "id": 205,
+    "title": "Real Madrid Secure Epic El Clásico Victory to Wrap Up La Liga Title",
+    "description": "Jude Bellingham struck in stoppage time once again as Real Madrid defeated rivals Barcelona 3-2 in an unforgettable encounter at the Santiago Bernabéu.",
+    "link": "/news/football/real-madrid-barcelona-el-clasico",
+    "category": "Football",
+    "league": "LaLiga",
+    "league_id": 8,
+    "published_at": "2026-04-21",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Football dynamic shot with ball resting on field boundary"
+    }
+  },
+  {
+    "id": 206,
+    "title": "Inter Milan Win Dramatic Derby della Madonnina to Clinch Serie A Shield",
+    "description": "Lautaro Martinez scored twice as Inter Milan defeated rivals AC Milan at San Siro to officially secure their historic 21st Italian league title.",
+    "link": "/news/football/inter-milan-clinch-serie-a",
+    "category": "Football",
+    "league": "Serie A",
+    "league_id": 23,
+    "published_at": "2026-04-28",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1504155611092-243aac2c3ce8?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Fans cheering inside a crowded football arena"
+    }
+  },
+  {
+    "id": 207,
+    "title": "Bayer Leverkusen Crowned Bundesliga Champions Once Again Under Alonso",
+    "description": "Xabi Alonso's tactical brilliance led Bayer Leverkusen to back-to-back domestic triumphs after outclassing Frankfurt in the closing fixture.",
+    "link": "/news/football/bayer-leverkusen-win-bundesliga",
+    "category": "Football",
+    "league": "Bundesliga",
+    "league_id": 35,
+    "published_at": "2026-05-10",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1431324155629-1a6edd1d141d?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Green soccer pitch under high intensity sports lighting"
+    }
+  },
+  {
+    "id": 208,
+    "title": "Sunrisers Hyderabad Crowned IPL Champions After Record Run Chase",
+    "description": "An explosive batting display saw Sunrisers Hyderabad chasing down a massive target of 224 against Kolkata Knight Riders to claim their latest IPL title.",
+    "link": "/news/cricket/srh-win-ipl-title",
+    "category": "Cricket",
+    "league": "Indian Premier League",
+    "league_id": 10967,
+    "published_at": "2026-05-26",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1624526267942-ab0ff8a3e972?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Cricket batsman preparing to strike a delivery during a match"
+    }
+  },
+  {
+    "id": 209,
+    "title": "Al-Hilal Secure Saudi Pro League Dominance with Mitrovic Masterclass",
+    "description": "Al-Hilal extended their historic domestic unbeaten run to secure the SPL crown with a comfortable victory over Al-Nassr in Riyadh.",
+    "link": "/news/football/al-hilal-win-saudi-pro-league",
+    "category": "Football",
+    "league": "Saudi Pro League",
+    "league_id": 1010,
+    "published_at": "2026-05-18",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Football match stadium setting"
+    }
+  },
+  {
+    "id": 210,
+    "title": "Inter Miami Clinch MLS Supporters' Shield in Tense Inter-Conference Clash",
+    "description": "Lionel Messi scored a stunning direct free-kick to hand Inter Miami a critical victory, securing the top regular-season record in Major League Soccer.",
+    "link": "/news/football/inter-miami-clinch-mls-shield",
+    "category": "Football",
+    "league": "Major League Soccer",
+    "league_id": 242,
+    "published_at": "2025-10-05",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1518063319789-7217e6706b04?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Soccer ball sitting in the back of the net"
+    }
+  },
+  {
+    "id": 211,
+    "title": "Paris Saint-Germain Crowned Ligue 1 Champions After Record Campaign",
+    "description": "A comfortable away win against Lyon saw Paris Saint-Germain retain their French top-flight crown with three regular-season games left to spare.",
+    "link": "/news/football/psg-crowned-ligue-1-champions",
+    "category": "Football",
+    "league": "Ligue 1",
+    "league_id": 34,
+    "published_at": "2026-05-03",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Empty professional stadium layout"
+    }
+  },
+  {
+    "id": 212,
+    "title": "Fiorentina Break Final Hoodoo to Secure UEFA Conference League Title",
+    "description": "After falling short in previous attempts, Fiorentina finally lifted the trophy following an extra-time goal from Nico Gonzalez to defeat West Ham 1-0 in Prague.",
+    "link": "/news/football/fiorentina-win-conference-league",
+    "category": "Football",
+    "league": "UEFA Conference League",
+    "league_id": 17015,
+    "published_at": "2026-05-27",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Football tournament night venue backdrop"
+    }
+  },
+  {
+    "id": 213,
+    "title": "Canada Fights Back to Earn Historic 1-1 Draw Against Bosnia",
+    "description": "In front of a roaring home crowd in Toronto, Canada bounced back fiercely to secure their first-ever tournament point in a balanced World Cup match.",
+    "link": "/news/football/world-cup-canada-bosnia",
+    "category": "Football",
+    "league": "FIFA World Cup",
+    "league_id": 16,
+    "published_at": "2026-06-12",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Overhead view of a pristine green football pitch grid"
+    }
+  },
+  {
+    "id": 214,
+    "title": "Real Madrid Unveil Squad Roster Structural Adjustments for New Season",
+    "description": "Real Madrid officially locked down their tactical configurations for the upcoming club season, confirming major roster placements.",
+    "link": "/news/football/real-madrid-roster-update",
+    "category": "Football",
+    "league": "LaLiga",
+    "league_id": 8,
+    "published_at": "2026-06-11",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Football ball resting near boundary lines"
+    }
+  },
+  {
+    "id": 215,
+    "title": "USA Shocks the World with Thrilling Opening Win Against Ecuador",
+    "description": "Christian Pulisic converts a late second-half penalty to hand co-hosts USA a massive 2-1 group stage win over Ecuador in New York.",
+    "link": "/news/football/usa-ecuador-world-cup",
+    "category": "Football",
+    "league": "FIFA World Cup",
+    "league_id": 16,
+    "published_at": "2026-06-11",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "High contrast shot of soccer ball rolling across line"
+    }
+  },
+  {
+    "id": 216,
+    "title": "Mumbai Indians Sign Rashid Khan in Blockbuster IPL Trade Window",
+    "description": "In one of the biggest moves in IPL history, Mumbai Indians finalized a trade deal to bring maestro spinner Rashid Khan into their ranks.",
+    "link": "/news/cricket/mumbai-indians-trade-rashid-khan",
+    "category": "Cricket",
+    "league": "Indian Premier League",
+    "league_id": 10967,
+    "published_at": "2025-12-15",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Cricket ball sitting on the pitch turf"
+    }
+  },
+  {
+    "id": 217,
+    "title": "Liverpool Secure Dramatic Late UCL Win Over Bayern Munich at Anfield",
+    "description": "A roaring home crowd carried Liverpool over the finish line as a 92nd-minute strike sealed a 2-1 victory in the Champions League group stage.",
+    "link": "/news/football/liverpool-bayern-ucl",
+    "category": "Football",
+    "league": "UEFA Champions League",
+    "league_id": 7,
+    "published_at": "2025-11-26",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Anfield illuminated soccer field landscape"
+    }
+  },
+  {
+    "id": 218,
+    "title": "Manchester United Salvage Europa League Point in Gritty Istanbul Draw",
+    "description": "Despite a late red card, Manchester United held onto a 1-1 draw against Fenerbahce in a hostile away environment.",
+    "link": "/news/football/manchester-united-fenerbahce-uel",
+    "category": "Football",
+    "league": "UEFA Europa League",
+    "league_id": 676,
+    "published_at": "2025-10-24",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Football tactical pitch layout"
+    }
+  },
+  {
+    "id": 219,
+    "title": "Arsenal Sink Tottenham in Thrilling North London Derby Masterclass",
+    "description": "Bukayo Saka starred with a brace as Arsenal completely dismantled Tottenham Hotspur 3-1 at the Emirates Stadium.",
+    "link": "/news/football/arsenal-tottenham-north-london-derby",
+    "category": "Football",
+    "league": "English Premier League",
+    "league_id": 17,
+    "published_at": "2026-03-15",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1504155611092-243aac2c3ce8?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Fans holding banners inside a football stadium"
+    }
+  },
+  {
+    "id": 220,
+    "title": "Barcelona Thrash Atletico Madrid as Lewandowski Hits Hat-Trick",
+    "description": "Robert Lewandowski put on a legendary shooting clinic at the Camp Nou to lift Barcelona to an easy 4-1 victory over Atletico.",
+    "link": "/news/football/barcelona-atletico-madrid-laliga",
+    "category": "Football",
+    "league": "LaLiga",
+    "league_id": 8,
+    "published_at": "2026-02-28",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Soccer match boots on green turf"
+    }
+  },
+  {
+    "id": 221,
+    "title": "Juventus Hold Napoli to Scoreless Draw in Fierce Tactical Battle",
+    "description": "A masterclass in defensive coordination saw Juventus and Napoli split points in a highly calculated tactical stalemate in Turin.",
+    "link": "/news/football/juventus-napoli-serie-a",
+    "category": "Football",
+    "league": "Serie A",
+    "league_id": 23,
+    "published_at": "2026-01-18",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1431324155629-1a6edd1d141d?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Soccer field grid view"
+    }
+  },
+  {
+    "id": 222,
+    "title": "Borussia Dortmund Edge Past Rivals Schalke in Revierderby Thriller",
+    "description": "A stunning 88th-minute volley from the edge of the box sealed a crucial 2-1 victory for Borussia Dortmund on home soil.",
+    "link": "/news/football/dortmund-schalke-revierderby",
+    "category": "Football",
+    "league": "Bundesliga",
+    "league_id": 35,
+    "published_at": "2026-04-12",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Dortmund match field under floodlights"
+    }
+  },
+  {
+    "id": 223,
+    "title": "Chennai Super Kings Captain MS Dhoni Hints at Final IPL Competitive Campaign",
+    "description": "Following their playoff elimination, legendary figure MS Dhoni addressed the media in Chennai, suggesting a final structural transition.",
+    "link": "/news/cricket/ms-dhoni-csk-retirement",
+    "category": "Cricket",
+    "league": "Indian Premier League",
+    "league_id": 10967,
+    "published_at": "2026-05-20",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1624526267942-ab0ff8a3e972?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Professional batsman standing at the crease"
+    }
+  },
+  {
+    "id": 224,
+    "title": "Al-Nassr Edge Past Al-Ittihad Thanks to Crucial Ronaldo Penalty",
+    "description": "Cristiano Ronaldo kept his cool to convert an 84th-minute penalty, securing a narrow 1-0 win for Al-Nassr in Jeddah.",
+    "link": "/news/football/al-nassr-al-ittihad-spl",
+    "category": "Football",
+    "league": "Saudi Pro League",
+    "league_id": 1010,
+    "published_at": "2026-03-02",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Dynamic football shot under arena lights"
+    }
+  },
+  {
+    "id": 225,
+    "title": "LA Galaxy Outclass LAFC in Electrics Edition of El Tráfico Derby",
+    "description": "A dominant performance saw the LA Galaxy claim bragging rights in Los Angeles with an emphatic 3-1 victory over rivals LAFC.",
+    "link": "/news/football/la-galaxy-lafc-el-trafico",
+    "category": "Football",
+    "league": "Major League Soccer",
+    "league_id": 242,
+    "published_at": "2025-09-14",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1518063319789-7217e6706b04?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Soccer ball moving into the goal framework"
+    }
+  },
+  {
+    "id": 226,
+    "title": "Marseille Stun Monaco in Seven-Goal Ligue 1 Thriller at Stade Vélodrome",
+    "description": "Marseille came back from two goals down to secure a breath-taking 4-3 victory in front of an ecstatic home crowd.",
+    "link": "/news/football/marseille-monaco-ligue1",
+    "category": "Football",
+    "league": "Ligue 1",
+    "league_id": 34,
+    "published_at": "2026-04-19",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Vélodrome empty stadium framework view"
+    }
+  },
+  {
+    "id": 227,
+    "title": "Aston Villa Claim Historic Conference League Knockout Victory",
+    "description": "Unai Emery's tactical setup proved flawless as Aston Villa outclassed Lille 2-0 to advance further into the European knockout stages.",
+    "link": "/news/football/aston-villa-lille-uecl",
+    "category": "Football",
+    "league": "UEFA Conference League",
+    "league_id": 17015,
+    "published_at": "2025-04-18",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Villa park lights during European tournament match"
+    }
+  },
+  {
+    "id": 228,
+    "title": "Argentina Masterclass: Messi Leads Holders to Dominant Opening Win Over Morocco",
+    "description": "Defending world champions Argentina started their title defense perfectly as Lionel Messi orchestrated a masterclass 3-0 group-stage win.",
+    "link": "/news/football/argentina-morocco-world-cup-analysis",
+    "category": "Football",
+    "league": "FIFA World Cup",
+    "league_id": 16,
+    "published_at": "2026-06-12",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1560272564-c83b66b1ad12?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "High definition shot of soccer cleats stepping onto turf grass"
+    }
+  },
+  {
+    "id": 229,
+    "title": "Chelsea Edge Past Newcastle to Keep Top 4 Premier League Hopes Alive",
+    "description": "Cole Palmer provided a goal and an assist as clinical Chelsea scraped past Newcastle United 2-1 at Stamford Bridge.",
+    "link": "/news/football/chelsea-newcastle-premier-league",
+    "category": "Football",
+    "league": "English Premier League",
+    "league_id": 17,
+    "published_at": "2026-05-02",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1504155611092-243aac2c3ce8?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Crowd cheering inside dynamic English football stadium"
+    }
+  },
+  {
+    "id": 230,
+    "title": "Royal Challengers Bengaluru Clinch Playoffs Spot in Final-Over IPL Drama",
+    "description": "Virat Kohli's spectacular half-century set up a thrilling final over defense where RCB held their nerve to book their playoff ticket.",
+    "link": "/news/cricket/rcb-playoffs-ipl-drama",
+    "category": "Cricket",
+    "league": "Indian Premier League",
+    "league_id": 10967,
+    "published_at": "2026-05-19",
+    "image": {
+      "url": "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=800&q=80",
+      "alt_text": "Cricket ball resting clean near the stadium pitch line boundary"
+    }
+  }
+]
