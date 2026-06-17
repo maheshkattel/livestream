@@ -1,230 +1,99 @@
-<!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="referrer" content="no-referrer">
-  <title>Football - South Korea vs Czechia</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@4.7.11/dist/controls.css" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.7.11/dist/shaka-player.ui.js" crossorigin="anonymous"></script>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    html, body {
-      width: 100%;
-      height: 100%;
-      background: #000;
-      overflow: hidden;
-      font-family: sans-serif;
-    }
-    .video-container,
-    #player-wrap {
-      position: absolute;
-      inset: 0;
-      background: #000;
-    }
-    #video {
-      width: 100%;
-      height: 100%;
-    }
-    /* Hide Shaka's built-in spinner — we use our own */
-    .shaka-spinner-container,
-    .shaka-buffering-spinner,
-    .shaka-spinner {
-      display: none !important;
-    }
-    /* Status badge */
-    #status {
-      position: fixed;
-      left: 12px;
-      bottom: 12px;
-      z-index: 10;
-      color: rgba(255,255,255,.9);
-      background: rgba(0,0,0,.6);
-      border: 1px solid rgba(255,255,255,.2);
-      border-radius: 8px;
-      padding: 6px 10px;
-      font-size: 12px;
-      max-width: 88vw;
-      pointer-events: none;
-      transition: opacity .3s;
-    }
-    #status:empty { opacity: 0; }
+    <meta charset="UTF-8">
+    </meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+    <title>Clappr - Video Player</title>
+    <script src="//cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/cdnbye@latest/dist/hlsjs-p2p-engine.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/cdnbye@latest/dist/clappr-plugin.min.js"></script>
+    <script src="//cdn.jsdelivr.net/gh/clappr/clappr-level-selector-plugin@latest/dist/level-selector.min.js"></script>
+    <link href='https://www.hls-player.net/fav.png' rel='icon' type='image/x-icon' />
 
-    /* Custom loading overlay */
-    #loader {
-      position: fixed;
-      inset: 0;
-      z-index: 9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0,0,0,.7);
-      transition: opacity .4s;
-    }
-    #loader.hidden { opacity: 0; pointer-events: none; }
-    .spinner {
-      width: 48px;
-      height: 48px;
-      border: 4px solid rgba(255,255,255,.2);
-      border-top-color: #fff;
-      border-radius: 50%;
-      animation: spin .8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-  </style>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+        }
+
+        .video-con {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            /* Set to full viewport height */
+        }
+
+        #vid {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
+
 <body>
+    <div class="video-con embed-responsive">
+        <meta content="no-referrer" name="referrer">
+        </meta>
+        <div id="vid"></div>
 
-  <div class="video-container">
-    <div id="player-wrap" data-shaka-player-container>
-      <video autoplay muted playsinline data-shaka-player id="video"></video>
+        <script>
+            function getQueryParam(param) {
+                const queryParams = new URLSearchParams(window.location.search);
+                return queryParams.get(param);
+            }
+
+            const videoSource = getQueryParam('url') || 'https://sportsleading.online/live/stream_e1.m3u8';
+
+            const player = new Clappr.Player({
+                source: videoSource,
+                parentId: '#vid',
+                // --- Poster added here ---
+                poster: 'https://web.cricfoot.net/logo.png', 
+                // -------------------------
+                mimeType: 'application/x-mpegURL',
+                autoPlay: true,
+                height: '100%',
+                width: '100%',
+                plugins: [CDNByeClapprPlugin, LevelSelector],
+                watermark: '',
+                watermarkLink: '',
+                position: 'top-right',
+                levelSelectorConfig: {
+                    labels: {
+                        6: '1080',
+                        5: '720',
+                        4: '480',
+                        3: '360',
+                        2: '240',
+                        1: '120',
+                        0: 'Auto'
+                    },
+                    labelCallback: function (resolution, label) {
+                        return label + resolution + 'p';
+                    }
+                },
+                playback: {
+                    hlsjsConfig: {
+                        p2pConfig: {
+                            logLevel: 'debug',
+                            live: true
+                        }
+                    }
+                }
+            });
+        </script>
     </div>
-  </div>
 
-  <div id="loader"><div class="spinner"></div></div>
-  <div id="status"></div>
-
-  <script>
-    // Patch missing console methods that some in-app browsers strip out
-    (function() {
-      var noop = function() {};
-      ['debug', 'info', 'warn', 'trace', 'group', 'groupEnd', 'groupCollapsed', 'time', 'timeEnd'].forEach(function(m) {
-        if (typeof console[m] !== 'function') console[m] = noop;
-      });
-    })();
-
-    var retries = 0;
-    var MAX_RETRIES = 50; // 50 × 80 ms = 4 seconds max wait
-
-    function showStatus(text) {
-      var s = document.getElementById('status');
-      if (s) s.textContent = text;
-    }
-
-    function hideLoader() {
-      var l = document.getElementById('loader');
-      if (l) l.classList.add('hidden');
-    }
-
-    function onPlayerError(error) {
-      hideLoader();
-      var code = error && error.code ? error.code : 'UNKNOWN';
-      console.error('Shaka error', error);
-      showStatus('Stream failed (code ' + code + ') — retrying…');
-
-      // Auto-retry stream load after 5 s on error
-      setTimeout(function() {
-        showStatus('');
-        loadStream();
-      }, 5000);
-    }
-
-    var playerRef = null;
-
-    async function loadStream() {
-      if (!playerRef) return;
-      try {
-        showStatus('Connecting…');
-        await playerRef.load(
-          'https://ottlive.dishhome.com.np/protected/GgTOzZkB0RDJ74Ryniuo/dash/manifest.mpd'
-        );
-        hideLoader();
-        showStatus('');
-        var video = document.getElementById('video');
-        video.muted = false;
-        video.play().catch(function() {});
-      } catch (e) {
-        onPlayerError(e);
-      }
-    }
-
-    async function initPlayer() {
-      // Guard: Shaka not loaded yet
-      if (!window.shaka || !shaka.Player || !shaka.Player.isBrowserSupported()) {
-        if (++retries > MAX_RETRIES) {
-          hideLoader();
-          showStatus('Browser not supported or Shaka failed to load.');
-          return;
-        }
-        setTimeout(initPlayer, 80);
-        return;
-      }
-
-      shaka.polyfill.installAll();
-
-      var video = document.getElementById('video');
-
-      // Guard: Shaka UI not attached yet
-      if (!video || !video.ui) {
-        if (++retries > MAX_RETRIES) {
-          hideLoader();
-          showStatus('Shaka UI failed to attach — try refreshing.');
-          return;
-        }
-        setTimeout(initPlayer, 80);
-        return;
-      }
-
-      var ui = video.ui;
-      var controls = ui.getControls();
-      var player = controls.getPlayer();
-      playerRef = player;
-
-      player.addEventListener('error', function(ev) { onPlayerError(ev.detail); });
-      controls.addEventListener('error', function(ev) { onPlayerError(ev.detail); });
-
-      // Configure control panel
-      ui.configure({
-        controlPanelElements: [
-          'play_pause',
-          'mute',
-          'volume',
-          'spacer',
-          'time_and_duration',
-          'quality',
-          'fullscreen',
-          'overflow_menu'
-        ],
-        overflowMenuButtons: ['quality', 'captions', 'cast', 'playback_rate', 'airplay'],
-        addSeekBar: true
-      });
-
-      // DRM + streaming config
-      player.configure({
-        drm: {
-          clearKeys: {
-            '220d8978f3fd45b696137c5b94f7a264': '7bfe13500edee4f837ec03a907896306'
-          }
-        },
-        streaming: {
-          bufferingGoal: 20,
-          rebufferingGoal: 2,
-          bufferBehind: 20,
-          stallEnabled: true,
-          stallThreshold: 1,
-          stallSkip: 0.1
-        }
-      });
-
-      loadStream();
-    }
-
-    function initFailed() {
-      hideLoader();
-      showStatus('Unable to load Shaka UI — check network or CDN.');
-    }
-
-    document.addEventListener('shaka-ui-loaded', initPlayer);
-    document.addEventListener('shaka-ui-load-failed', initFailed);
-
-    // Wake lock — keep screen on during stream
-    if ('wakeLock' in navigator) {
-      navigator.wakeLock.request('screen').catch(function() {});
-    }
-  </script>
+    <div style="position:fixed;top:0;left:0;width:100%;height:1px;overflow:hidden;visibility:hidden;z-index:9999;">
+        <script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script>
+        <script type="text/javascript">
+            sc_online_i(1707252,"ffffff","ffffff");
+        </script>
+        <noscript><a href="https://www.supercounters.com/" style="visibility:hidden;">free online counter</a></noscript>
+    </div>
 </body>
+
 </html>
