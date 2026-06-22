@@ -1,14 +1,14 @@
 [
   { 
     "id":"wc",
-    "webviewlink":"https://live-player-phalatv.vercel.app/?id=M6France",
+    "webviewlink":"https://maheshkattel.github.io/livestream/apis/shaka.html?id=rtbgo",
     "webviewlink1":"https://maheshkattel.github.io/livestream/apis/shaka.html?id=rtb2",
-    "webviewlink2":"https://maheshkattel.github.io/livestream/apis/shaka.html?id=rtbgo",
+    "webviewlink2":"https://live-player-phalatv.vercel.app/?id=M6France",
     "webviewlink3":"https://live-player-phalatv.vercel.app/?Sporza+Hd",
     "webviewlink4":"https://live-player-phalatv.vercel.app/?id=VIX",
     "webviewlink5":"https://live-player-phalatv.vercel.app/hls?id=Telemundo",
    "webviewlink6":"https://streams.center/embed/ch2.php", "webviewlink7":"https://streams.center/embed/ch3.php",
-    "m3u8":"https://live-player-phalatv.vercel.app/?id=M6France",
+    "m3u8":"https://maheshkattel.github.io/livestream/apis/shaka.html?id=rtbgo",
     "m3u81":"https://live-player-phalatv.vercel.app/?id=Sporza+Hd",
     "m3u82":"https://maheshkattel.github.io/livestream/apis/shaka.html?id=rtb2",
     "m3u83":"https://maheshkattel.github.io/livestream/apis/shaka.html?id=rtbgo",
