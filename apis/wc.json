@@ -1,7 +1,7 @@
 [
   { 
     "id":"wc",
-    "webviewlink":"https://live-player-phalatv.vercel.app/hls?id=DAZN",
+    "webviewlink":"",
     "webviewlink1":"",
     "webviewlink2":"",
     "webviewlink3":"https://live-player-phalatv.vercel.app/hls?id=beinSports",
@@ -19,9 +19,9 @@
     "m3u87":""
   },
 { 
-    "id":"3",
-    "webviewlink":"https://live-player-phalatv.vercel.app/hls?id=WinSport",
-    "webviewlink1":"",
+    "id":"23",
+    "webviewlink":"https://live-player-phalatv.vercel.app/hls?id=DAZN",
+    "webviewlink1":"https://live-player-phalatv.vercel.app/hls?id=TVP-Sport",
     "webviewlink2":"",
     "webviewlink3":"",
     "webviewlink4":"",
@@ -32,7 +32,7 @@
     "m3u81":"",
     "m3u82":"",
     "m3u83":"",
-    "m3u84":"https://i-am-ptv.vercel.app/hls?id=WinSport",
+    "m3u84":"https://live-player-phalatv.vercel.app/hls?id=WinSport",
     "m3u85":"",
     "m3u86":"",
     "m3u87":""
