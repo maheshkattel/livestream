@@ -18,9 +18,9 @@
     "m3u86":"https://streams.center/embed/ch3.php",   "m3u87":"https://streams.center/embed/ch2.php"
   },
 { 
-    "id":"23",
-    "webviewlink":"https://live-player-phalatv.vercel.app/hls?id=DAZN",
-    "webviewlink1":"https://live-player-phalatv.vercel.app/hls?id=TVP-Sport",
+    "id":"30",
+    "webviewlink":"https://live-player-phalatv.vercel.app/hls?id=ELTA",
+    "webviewlink1":"https://live-phalatv.vercel.app/streaming/player/mpd.html?id=wtv",
     "webviewlink2":"",
     "webviewlink3":"",
     "webviewlink4":"",
@@ -31,7 +31,7 @@
     "m3u81":"",
     "m3u82":"",
     "m3u83":"",
-    "m3u84":"https://live-player-phalatv.vercel.app/hls?id=WinSport",
+    "m3u84":"",
     "m3u85":"",
     "m3u86":"",
     "m3u87":""
