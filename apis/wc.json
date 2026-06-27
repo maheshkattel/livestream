@@ -37,13 +37,13 @@
     "m3u87":""
   },
   { 
-    "id":"59",
+    "id":"27",
     "webviewlink":"",
-    "webviewlink1":"https://live-player-phalatv.vercel.app/hls?id=DAZN",
+    "webviewlink1":"",
     "webviewlink2":"",
-    "webviewlink3":"https://live-player-phalatv.vercel.app/hls?id=beinSports",
-    "webviewlink4":"https://live-player-phalatv.vercel.app/hls?id=Bein",
-    "webviewlink5":"https://live-player-phalatv.vercel.app/hls?id=TVP-Sport",
+    "webviewlink3":"",
+    "webviewlink4":"",
+    "webviewlink5":"https://live-player-phalatv.vercel.app/hls?id=M1",
     "webviewlink6":"",
     "webviewlink7":"",
     "m3u8":"",
