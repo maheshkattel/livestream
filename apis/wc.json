@@ -2,7 +2,7 @@
   { 
     "id":"wc",
     "webviewlink":"https://live-phalatv.vercel.app/streaming/player/mpd.html?id=wtv",
-    "webviewlink1":"https://live-phalatv.vercel.app/streaming/player/mpd.html?id=tsn",
+    "webviewlink1":"https://live-phalatv.vercel.app/streaming/player/mpd.html?id=tsn1",
     "webviewlink2":"https://live-phalatv.vercel.app/streaming/player/mpd.html?id=m6france",
     "webviewlink3":"https://live-player-phalatv.vercel.app/hls?id=beinSports",
     "webviewlink4":"https://live-player-phalatv.vercel.app/hls?id=Bein",
