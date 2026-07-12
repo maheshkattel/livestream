@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phala TV M3U8 Player</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            overflow: hidden;
+        }
+
+        #video {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+            background: #000;
+            object-fit: contain;
+        }
+
+        #error {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            text-align: center;
+            display: none;
+            padding: 20px;
+        }
+
+        #loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <video id="video" controls autoplay playsinline></video>
+
+    <div id="loading">Loading stream...</div>
+    <div id="error">No stream URL found.</div>
+
+    <script>
+        const video = document.getElementById('video');
+const errorDiv = document.getElementById('error');
+const loadingDiv = document.getElementById('loading');
+
+function encodeBase64(str) {
+    return btoa(str)
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=+$/g, '');
+}
+
+function decodeBase64(str) {
+    str = str
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+
+    while (str.length % 4) {
+        str += '=';
+    }
+
+    return atob(str);
+}
+
+function getRawUrl() {
+    const query = window.location.search.substring(1);
+
+    if (!query.startsWith('url=')) {
+        return null;
+    }
+
+    return query.substring(4);
+}
+
+function getStreamUrl() {
+
+    let url = getRawUrl();
+
+    if (!url) return null;
+
+    // Try Base64 decode first
+    try {
+        const decoded = decodeBase64(url);
+
+        if (
+            decoded.startsWith('http://') ||
+            decoded.startsWith('https://')
+        ) {
+            return decoded;
+        }
+    } catch(e) {}
+
+    // Plain URL support
+    try {
+        return decodeURIComponent(url);
+    } catch(e) {
+        return url;
+    }
+}
+
+const rawUrl = getRawUrl();
+const streamUrl = getStreamUrl();
+
+if (!streamUrl) {
+    loadingDiv.style.display = 'none';
+    errorDiv.style.display = 'block';
+    throw new Error('No URL parameter found');
+}
+
+/*
+ * If URL is plain HTTP/HTTPS,
+ * automatically change address bar
+ * to Base64 version without reloading.
+ */
+if (
+    rawUrl &&
+    (
+        rawUrl.startsWith('http://') ||
+        rawUrl.startsWith('https://')
+    )
+) {
+
+    const encoded = encodeBase64(streamUrl);
+
+    const newUrl =
+        window.location.pathname +
+        '?url=' +
+        encoded;
+
+    window.history.replaceState({}, '', newUrl);
+}
+
+console.log('Playing:', streamUrl);
+
+if (Hls.isSupported()) {
+
+    const hls = new Hls({
+        enableWorker: true,
+        lowLatencyMode: true
+    });
+
+    hls.loadSource(streamUrl);
+    hls.attachMedia(video);
+
+    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        loadingDiv.style.display = 'none';
+        video.play().catch(() => {});
+    });
+
+    hls.on(Hls.Events.ERROR, (event, data) => {
+
+        console.error(data);
+
+        if (data.fatal) {
+
+            loadingDiv.style.display = 'none';
+            errorDiv.innerHTML = 'Failed to load stream.';
+            errorDiv.style.display = 'block';
+        }
+    });
+
+} else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+
+    video.src = streamUrl;
+
+    video.addEventListener('loadedmetadata', () => {
+        loadingDiv.style.display = 'none';
+        video.play().catch(() => {});
+    });
+
+    video.addEventListener('error', () => {
+        loadingDiv.style.display = 'none';
+        errorDiv.innerHTML = 'Failed to load stream.';
+        errorDiv.style.display = 'block';
+    });
+
+} else {
+
+    loadingDiv.style.display = 'none';
+    errorDiv.innerHTML = 'HLS is not supported in this browser.';
+    errorDiv.style.display = 'block';
+}
+    </script>
+
+</body>
+
+</html>
