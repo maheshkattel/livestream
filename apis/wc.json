@@ -1,11 +1,11 @@
 [
   { 
     "id":"wc",
-    "webviewlink":"https://maheshkattel.github.io/livestream/player/hls_player.html?url=https://live05.grita.app/live/08552895.m3u8",
-    "webviewlink1":"",
+    "webviewlink":"",
+    "webviewlink1":"https://maheshkattel.github.io/livestream/player/hls_player?url=https://trophystream.com/cors-proxy/https/deviantart.lovetier.bz/TSN3/index.m3u8",
     "webviewlink2":"https://maheshkattel.github.io/livestream/player/hls_player.html?url=https://live05.grita.app/live/24561735.m3u8",
     "webviewlink3":"https://maheshkattel.github.io/livestream/player/hls_player.html?url=https://1nyaler.streamhostingcdn.top/stream/23/index.m3u8",
-    "webviewlink4":"",
+    "webviewlink4":"https://maheshkattel.github.io/livestream/player/hls_player.html?url=https://live05.grita.app/live/08552895.m3u8",
     "webviewlink5":"https://live-player-phalatv.vercel.app/hls?id=beinSports",
    "webviewlink6":"https://live-player-phalatv.vercel.app/hls?id=Bein",
     "webviewlink7":"",
