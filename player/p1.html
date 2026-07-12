@@ -1,0 +1,89 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no">
+    <title>Clappr - Video Player</title>
+    <script src="//cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/cdnbye@latest/dist/hlsjs-p2p-engine.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/cdnbye@latest/dist/clappr-plugin.min.js"></script>
+    <script src="//cdn.jsdelivr.net/gh/clappr/clappr-level-selector-plugin@latest/dist/level-selector.min.js"></script>
+    <link href='https://www.hls-player.net/fav.png' rel='icon' type='image/x-icon'/>
+
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+        }
+        .video-con {
+            position: relative;
+            width: 100%;
+            height: 100vh; /* Set to full viewport height */
+        }
+        #vid {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="video-con embed-responsive">
+        <meta content="no-referrer" name="referrer"></meta>
+        <div id="vid"></div>
+        
+        <script>
+            function getQueryParam(param) {
+                const queryParams = new URLSearchParams(window.location.search);
+                return queryParams.get(param);
+            }
+
+            const videoSource = getQueryParam('url') || 'https://sportsleading.online/live/stream_e1.m3u8';
+
+            const player = new Clappr.Player({
+                source: videoSource,
+                parentId: '#vid',
+                // --- Poster added here ---
+                poster: 'https://web.cricfoot.net/logo.png', 
+                // -------------------------
+                mimeType: 'application/x-mpegURL',
+                autoPlay: true,
+                height: '100%',
+                width: '100%',
+                plugins: [CDNByeClapprPlugin, LevelSelector],
+                watermark: '',
+                watermarkLink: '',
+                position: 'top-right',
+                levelSelectorConfig: {
+                    labels: {
+                        6: '1080',
+                        5: '720',
+                        4: '480',
+                        3: '360',
+                        2: '240',
+                        1: '120',
+                        0: 'Auto'
+                    },
+                    labelCallback: function (resolution, label) {
+                        return label + resolution + 'p';
+                    }
+                },
+                playback: {
+                    hlsjsConfig: {
+                        p2pConfig: {
+                            logLevel: 'debug',
+                            live: true
+                        }
+                    }
+                }
+            });
+        </script>
+    </div>
+
+    <div style="position:fixed;top:0;left:0;width:100%;height:1px;overflow:hidden;visibility:hidden;z-index:9999;">
+        <script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script>
+        <script type="text/javascript">sc_online_i(1707252,"ffffff","ffffff");</script>
+        <noscript><a href="https://www.supercounters.com/" style="visibility:hidden;">free online counter</a></noscript>
+    </div>
+</body>
+</html>
