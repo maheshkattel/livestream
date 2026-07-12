@@ -246,9 +246,9 @@
     }
   },
   "sports5": {
-    "url": "https://d1zqtf09wb8nt5.cloudfront.net/livedash/oil/freetv/live/sport_5/live.livx?indexMode&amp;dvr=7200000",
+    "url": "https://qp-pldt-live-bpk-ucd-prod.akamaized.net/bpk-tv/fifa_ppv1/default/index.mpd",
     "clearKeys": {
-      "c3b32b23081b5486ae5176da9c358808": "4708b352ee1d50ccdf94af9d2a952ed8"
+      "17bb9e12c9d844bb9d032a5399d61cc5": "08c136b87678210bbac2224550f85c9e"
     }
   }
 }
