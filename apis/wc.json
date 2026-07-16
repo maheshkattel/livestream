@@ -1,7 +1,7 @@
 [
   { 
     "id":"wc",
-    "webviewlink":"",
+    "webviewlink":"https://live-player-phalatv.vercel.app/hls?id=beinSports",
     "webviewlink1":"",
     "webviewlink2":"https://live-phalatv.vercel.app/streaming/ptvhs/teleaamo.html",
     "webviewlink3":"",
