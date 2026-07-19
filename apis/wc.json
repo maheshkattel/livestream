@@ -19,7 +19,7 @@
   },
 { 
     "id":"30",
-    "webviewlink":"https://live-player-phalatv.vercel.app/hls?id=ELTA",
+    "webviewlink":"",
     "webviewlink1":"https://live-phalatv.vercel.app/streaming/player/mpd.html?id=wtv",
     "webviewlink2":"",
     "webviewlink3":"",
